@@ -1,4 +1,4 @@
-package com.android.jtknife.core.eventbus;
+package com.android.jtknife.core.common.eventbus;
 
 /**
  * EventBus事件消息实体类
