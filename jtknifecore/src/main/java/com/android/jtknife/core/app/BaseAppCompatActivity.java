@@ -53,11 +53,13 @@ public abstract class BaseAppCompatActivity extends AppCompatActivity {
     protected void onDestroy() {
         super.onDestroy();
         EventBus.getDefault().unregister(this);
+        ButterKnife.unbind(this);
         mContext = null;
     }
 
     /**
      * EventBus事件处理--主线程处理
+     *
      * @param event
      */
     @Subscribe(threadMode = ThreadMode.MAIN)
@@ -80,6 +82,7 @@ public abstract class BaseAppCompatActivity extends AppCompatActivity {
     public void showToast(String message) {
         Toast.makeText(this, message, Toast.LENGTH_SHORT).show();
     }
+
     public void showToast(int msgRes) {
         showToast(getString(msgRes));
     }

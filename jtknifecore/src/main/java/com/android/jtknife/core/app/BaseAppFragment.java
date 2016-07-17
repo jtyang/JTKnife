@@ -12,7 +12,7 @@ import android.view.ViewGroup;
  * AUTHOR: yangjiantong
  * DATE: 16/6/29
  */
-public class BaseAppFragment extends Fragment {
+public abstract class BaseAppFragment extends Fragment {
 
     @Nullable
     @Override
@@ -29,4 +29,12 @@ public class BaseAppFragment extends Fragment {
     public void onDestroyView() {
         super.onDestroyView();
     }
+
+
+    //************* 子类必须实现的抽象方法 start **********
+    protected abstract int getLayoutResource();
+
+    protected abstract void onInitView();
+
+    //************* 子类必须实现的抽象方法 end**********
 }
