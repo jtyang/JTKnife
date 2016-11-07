@@ -11,7 +11,7 @@ public class BusManager {
 
     private static BusManager ourInstance = new BusManager();
 
-    public static BusManager getInstance() {
+    public static BusManager getDefault() {
         return ourInstance;
     }
 
