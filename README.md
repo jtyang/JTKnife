@@ -4,4 +4,5 @@ Collection of good open source library, easy and rapid development android proje
 
 # Thanks
 java-util: https://github.com/jdereg/java-util
+
 featured: https://github.com/beworker/featured
