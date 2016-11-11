@@ -6,6 +6,7 @@ import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.widget.Toast;
 
+import com.android.jtknife.core.common.di.DI;
 import com.android.jtknife.core.common.eventbus.MessageEvent;
 
 import org.greenrobot.eventbus.EventBus;
@@ -30,6 +31,7 @@ public abstract class BaseAppCompatActivity extends AppCompatActivity {
         mContext = this;
         setContentView(getLayoutResource());
         ButterKnife.bind(this);
+        DI.inject(this);
         EventBus.getDefault().register(this);
         onInitView();
     }
