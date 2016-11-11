@@ -5,12 +5,12 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 
-import com.android.jtknife.core.app.BaseAppCompatActivity;
+import com.android.jtknife.common.app.BaseActivity;
 import com.android.jtknife.modules.feature.FeatureSampleActivity;
 
 import butterknife.Bind;
 
-public class MainActivity extends BaseAppCompatActivity implements View.OnClickListener {
+public class MainActivity extends BaseActivity implements View.OnClickListener {
 
     @Bind(R.id.feature_btn)
     Button featureButton;

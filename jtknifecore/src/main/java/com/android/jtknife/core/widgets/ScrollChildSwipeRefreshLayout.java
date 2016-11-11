@@ -1,4 +1,4 @@
-package com.android.jtknife.core.views;
+package com.android.jtknife.core.widgets;
 
 import android.content.Context;
 import android.support.v4.view.ViewCompat;
