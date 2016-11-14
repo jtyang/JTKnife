@@ -6,4 +6,5 @@ package com.android.jtknife.core.app.mvp;
  * DATE: 2016/11/14
  */
 public interface BaseView {
+
 }
