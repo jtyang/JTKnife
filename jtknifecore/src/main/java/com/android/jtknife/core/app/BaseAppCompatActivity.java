@@ -24,11 +24,14 @@ import butterknife.ButterKnife;
 public abstract class BaseAppCompatActivity extends AppCompatActivity {
 
     public Context mContext;
+    public boolean isShow = false;
+    public boolean isAlive = false;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         mContext = this;
+        isAlive = true;
         setContentView(getLayoutResource());
         ButterKnife.bind(this);
         DI.inject(this);
@@ -44,6 +47,13 @@ public abstract class BaseAppCompatActivity extends AppCompatActivity {
     @Override
     protected void onResume() {
         super.onResume();
+        isShow = true;
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        isShow = false;
     }
 
     @Override
@@ -57,6 +67,7 @@ public abstract class BaseAppCompatActivity extends AppCompatActivity {
         EventBus.getDefault().unregister(this);
         ButterKnife.unbind(this);
         mContext = null;
+        isAlive = false;
     }
 
     /**
@@ -67,7 +78,10 @@ public abstract class BaseAppCompatActivity extends AppCompatActivity {
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onMessageEvent(MessageEvent event) {
         if (event != null) {
-            handleMessage(event);
+            handleBusMessage(event);
+            if(isShow){
+                handleBusMessageIfShow(event);
+            }
         }
     }
 
@@ -76,7 +90,11 @@ public abstract class BaseAppCompatActivity extends AppCompatActivity {
      *
      * @param event
      */
-    public void handleMessage(MessageEvent event) {
+    public void handleBusMessage(MessageEvent event) {
+
+    }
+
+    public void handleBusMessageIfShow(MessageEvent event){
 
     }
 
