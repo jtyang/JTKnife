@@ -20,6 +20,10 @@ public class BaseApplication extends Application {
     public void onCreate() {
         super.onCreate();
         mContext = getApplicationContext();
+        initConfig();
+    }
+
+    private void initConfig() {
     }
 
 

@@ -40,4 +40,6 @@ public interface IRefreshLayout {
     void showEmptyView();
 
     void showErrorView();
+
+    void showLoadingView();
 }

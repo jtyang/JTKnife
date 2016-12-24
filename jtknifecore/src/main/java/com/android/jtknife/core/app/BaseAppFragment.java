@@ -8,6 +8,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.android.jtknife.core.common.di.DI;
+import com.android.jtknife.core.common.notification.NotificationCenter;
 
 /**
  * 文件描述
@@ -25,6 +26,7 @@ public abstract class BaseAppFragment extends Fragment {
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+        NotificationCenter.INSTANCE.addObserver(this);
         return super.onCreateView(inflater, container, savedInstanceState);
     }
 
@@ -36,6 +38,7 @@ public abstract class BaseAppFragment extends Fragment {
     @Override
     public void onDestroyView() {
         super.onDestroyView();
+        NotificationCenter.INSTANCE.removeObserver(this);
     }
 
     @Override

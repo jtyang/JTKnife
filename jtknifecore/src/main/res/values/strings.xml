@@ -1,3 +1,4 @@
 <resources>
     <string name="app_name">JTKnifeCore</string>
+    <string name="general_alert_buttons_ok">OK</string>
 </resources>

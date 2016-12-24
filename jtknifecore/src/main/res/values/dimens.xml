@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <dimen name="grid_1_half">4dp</dimen>
+    <dimen name="grid_1">8dp</dimen>
+    <dimen name="grid_3_half">12dp</dimen>
+    <dimen name="grid_2">16dp</dimen>
+    <dimen name="grid_5_half">20dp</dimen>
+    <dimen name="grid_3">24dp</dimen>
+    <dimen name="grid_7_half">28dp</dimen>
+    <dimen name="grid_4">32dp</dimen>
+    <dimen name="grid_9_half">36dp</dimen>
+    <dimen name="grid_5">40dp</dimen>
+    <dimen name="grid_11_half">44dp</dimen>
+    <dimen name="grid_6">48dp</dimen>
+    <dimen name="grid_7">56dp</dimen>
+    <dimen name="grid_8">64dp</dimen>
+    <dimen name="grid_9">72dp</dimen>
+    <dimen name="grid_10">80dp</dimen>
+    <dimen name="grid_12">96dp</dimen>
+    <dimen name="grid_14">112dp</dimen>
+    <dimen name="grid_15">120dp</dimen>
+    <dimen name="grid_16">128dp</dimen>
+    <dimen name="grid_20">160dp</dimen>
+    <dimen name="grid_35">280dp</dimen>
+    <dimen name="grid_40">320dp</dimen>
+
+    <dimen name="button_corner_radius">@dimen/grid_1_half</dimen>
+</resources>

@@ -29,6 +29,7 @@ public class SwipeRefreshLayoutEx extends SwipeRefreshLayout implements IRefresh
     private boolean mCanLoadMore;
     private View mEmptyView;
     private View mErrorView;
+    private View mLoadingView;
     private boolean mIsLoadingMore;
     private boolean mIsRefreshing;
     private boolean mIsRvScrollUp;
@@ -53,6 +54,7 @@ public class SwipeRefreshLayoutEx extends SwipeRefreshLayout implements IRefresh
         this.mEmptyView.setClickable(true);
         this.mErrorView = LayoutInflater.from(context).inflate(R.layout.layout_error_view, null);
         this.mErrorView.setClickable(true);
+        this.mLoadingView = LayoutInflater.from(context).inflate(R.layout.layout_loading_view, null);
     }
 
     private void addScrollListener() {
@@ -189,6 +191,13 @@ public class SwipeRefreshLayoutEx extends SwipeRefreshLayout implements IRefresh
         addView(this.mErrorView, layoutParams);
     }
 
+    @Override
+    public void showLoadingView(){
+        removeEmptyErrorView();
+        LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT);
+        layoutParams.gravity = Gravity.CENTER;
+        addView(this.mLoadingView, layoutParams);
+    }
 
     private void removeEmptyErrorView() {
         ViewGroup viewGroup = (ViewGroup) getParent();
@@ -197,6 +206,9 @@ public class SwipeRefreshLayoutEx extends SwipeRefreshLayout implements IRefresh
         }
         if (this.mEmptyView != null) {
             viewGroup.removeView(this.mEmptyView);
+        }
+        if(this.mLoadingView != null){
+            viewGroup.removeView(this.mLoadingView);
         }
     }
 
@@ -210,4 +222,6 @@ public class SwipeRefreshLayoutEx extends SwipeRefreshLayout implements IRefresh
         super.setRefreshing(isRefreshing);
         this.mIsRefreshing = isRefreshing;
     }
+
+
 }

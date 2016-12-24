@@ -5,16 +5,17 @@ package com.android.jtknife.core.common.eventbus;
  * AUTHOR: yangjiantong
  * DATE: 16/7/8
  */
-public class MessageEvent<T> {
+public class MessageEvent {
 
-    public final int what;
-    public T message;
+    private int what;
+    public int msgId;
+    public Object obj;
 
     public MessageEvent(int what) {
         this.what = what;
     }
-    public MessageEvent(int what,T message) {
+    public MessageEvent(int what,Object message) {
         this.what = what;
-        this.message = message;
+        this.obj = message;
     }
 }
