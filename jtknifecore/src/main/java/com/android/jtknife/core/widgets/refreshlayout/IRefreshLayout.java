@@ -42,4 +42,6 @@ public interface IRefreshLayout {
     void showErrorView();
 
     void showLoadingView();
+
+    void showContentView();
 }

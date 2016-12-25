@@ -7,16 +7,14 @@ import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
 import android.util.AttributeSet;
 import android.util.Log;
-import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.GridView;
-import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
 
 import com.android.jtknife.core.R;
+import com.elvishew.xlog.XLog;
 
 /**
  * SwipeRefreshLayout扩展
@@ -30,6 +28,7 @@ public class SwipeRefreshLayoutEx extends SwipeRefreshLayout implements IRefresh
     private View mEmptyView;
     private View mErrorView;
     private View mLoadingView;
+    private View mContentView;
     private boolean mIsLoadingMore;
     private boolean mIsRefreshing;
     private boolean mIsRvScrollUp;
@@ -55,6 +54,7 @@ public class SwipeRefreshLayoutEx extends SwipeRefreshLayout implements IRefresh
         this.mErrorView = LayoutInflater.from(context).inflate(R.layout.layout_error_view, null);
         this.mErrorView.setClickable(true);
         this.mLoadingView = LayoutInflater.from(context).inflate(R.layout.layout_loading_view, null);
+        this.mContentView = getChildAt(0);
     }
 
     private void addScrollListener() {
@@ -176,40 +176,58 @@ public class SwipeRefreshLayoutEx extends SwipeRefreshLayout implements IRefresh
     @Override
     public void showEmptyView() {
         removeEmptyErrorView();
-        LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT);
-        layoutParams.gravity = Gravity.CENTER;
-        ViewGroup viewGroup = (ViewGroup) getParent();
-        viewGroup.removeView(this.mEmptyView);
-        viewGroup.addView(this.mEmptyView, layoutParams);
+//        LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT);
+//        layoutParams.gravity = Gravity.CENTER;
+//        ViewGroup viewGroup = (ViewGroup) getParent();
+//        viewGroup.removeView(this.mEmptyView);
+//        viewGroup.addView(this.mEmptyView, layoutParams);
+        addView(this.mEmptyView);
     }
 
     @Override
     public void showErrorView() {
         removeEmptyErrorView();
-        LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT);
-        layoutParams.gravity = Gravity.CENTER;
-        addView(this.mErrorView, layoutParams);
+//        LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT);
+//        layoutParams.gravity = Gravity.CENTER;
+//        addView(this.mErrorView, layoutParams);
+        if (this.mErrorView != null) {
+            XLog.i("showErrorView");
+            addView(this.mErrorView);
+        }
     }
 
     @Override
-    public void showLoadingView(){
+    public void showLoadingView() {
+        XLog.i("showLoadingView");
         removeEmptyErrorView();
-        LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT);
-        layoutParams.gravity = Gravity.CENTER;
-        addView(this.mLoadingView, layoutParams);
+//        LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT);
+//        layoutParams.gravity = Gravity.CENTER;
+//        addView(this.mLoadingView, layoutParams);
+        if (this.mLoadingView != null) {
+            addView(this.mLoadingView);
+        }
+    }
+
+    @Override
+    public void showContentView() {
+        removeAllViews();
+        if (this.mContentView != null) {
+            addView(this.mContentView);
+        }
     }
 
     private void removeEmptyErrorView() {
-        ViewGroup viewGroup = (ViewGroup) getParent();
-        if (this.mErrorView != null) {
-            viewGroup.removeView(this.mErrorView);
-        }
-        if (this.mEmptyView != null) {
-            viewGroup.removeView(this.mEmptyView);
-        }
-        if(this.mLoadingView != null){
-            viewGroup.removeView(this.mLoadingView);
-        }
+//        ViewGroup viewGroup = (ViewGroup) getParent();
+//        if (this.mErrorView != null) {
+//            viewGroup.removeView(this.mErrorView);
+//        }
+//        if (this.mEmptyView != null) {
+//            viewGroup.removeView(this.mEmptyView);
+//        }
+//        if(this.mLoadingView != null){
+//            viewGroup.removeView(this.mLoadingView);
+//        }
+        removeAllViews();
     }
 
     private void callRefresh() {

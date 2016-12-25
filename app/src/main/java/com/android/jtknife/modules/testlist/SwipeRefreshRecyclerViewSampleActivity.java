@@ -4,6 +4,8 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.view.View;
+import android.widget.Button;
 
 import com.android.jtknife.R;
 import com.android.jtknife.common.app.BaseActivity;
@@ -18,13 +20,21 @@ import butterknife.Bind;
  * AUTHOR: yangjiantong
  * DATE: 2016/12/25
  */
-public class SwipeRefreshRecyclerViewSampleActivity extends BaseActivity {
+public class SwipeRefreshRecyclerViewSampleActivity extends BaseActivity implements View.OnClickListener {
 
 
     @Bind(R.id.recyclerview)
     RecyclerView recyclerview;
     @Bind(R.id.swipe_refresh_layout)
     SwipeRefreshLayoutEx swipeRefreshLayout;
+    @Bind(R.id.loading_btn)
+    Button loadingBtn;
+    @Bind(R.id.content_btn)
+    Button contentBtn;
+    @Bind(R.id.empty_btn)
+    Button emptyBtn;
+    @Bind(R.id.error_btn)
+    Button errorBtn;
 
     MyRecyclerViewAdapter mAdapter;
 
@@ -42,8 +52,12 @@ public class SwipeRefreshRecyclerViewSampleActivity extends BaseActivity {
 
     @Override
     protected void onInitView() {
+        loadingBtn.setOnClickListener(this);
+        contentBtn.setOnClickListener(this);
+        emptyBtn.setOnClickListener(this);
+        errorBtn.setOnClickListener(this);
         mAdapter = new MyRecyclerViewAdapter(mContext);
-        RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(mContext,LinearLayoutManager.VERTICAL,false);
+        RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(mContext, LinearLayoutManager.VERTICAL, false);
         recyclerview.setLayoutManager(layoutManager);
         recyclerview.setAdapter(mAdapter);
 
@@ -58,5 +72,25 @@ public class SwipeRefreshRecyclerViewSampleActivity extends BaseActivity {
                 XLog.i("onRefresh==========");
             }
         });
+    }
+
+    @Override
+    public void onClick(View v) {
+        switch (v.getId()){
+            case R.id.loading_btn:
+                swipeRefreshLayout.showLoadingView();
+                break;
+            case R.id.content_btn:
+                swipeRefreshLayout.showContentView();
+                break;
+            case R.id.empty_btn:
+                swipeRefreshLayout.showEmptyView();
+                break;
+            case R.id.error_btn:
+                swipeRefreshLayout.showErrorView();
+                break;
+            default:break;
+
+        }
     }
 }
