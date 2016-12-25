@@ -7,9 +7,9 @@ import android.support.v7.widget.RecyclerView;
 
 import com.android.jtknife.R;
 import com.android.jtknife.common.app.BaseActivity;
-import com.android.jtknife.core.common.logger.Logger;
 import com.android.jtknife.core.widgets.refreshlayout.IRefreshLayout;
 import com.android.jtknife.core.widgets.refreshlayout.SwipeRefreshLayoutEx;
+import com.elvishew.xlog.XLog;
 
 import butterknife.Bind;
 
@@ -31,7 +31,7 @@ public class SwipeRefreshRecyclerViewSampleActivity extends BaseActivity {
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        Logger.i("SwipeRefreshRecyclerViewSampleActivity onCreate");
+        XLog.i("SwipeRefreshRecyclerViewSampleActivity onCreate");
         swipeRefreshLayout.showLoadingView();
     }
 
@@ -50,12 +50,12 @@ public class SwipeRefreshRecyclerViewSampleActivity extends BaseActivity {
         swipeRefreshLayout.setCallBack(new IRefreshLayout.IRefreshCallback() {
             @Override
             public void onLoadMore() {
-                Logger.i("onLoadMore==========");
+                XLog.i("onLoadMore==========");
             }
 
             @Override
             public void onRefresh() {
-                Logger.i("onRefresh==========");
+                XLog.i("onRefresh==========");
             }
         });
     }

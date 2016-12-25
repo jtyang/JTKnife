@@ -6,7 +6,7 @@ import android.support.annotation.Nullable;
 import android.view.View;
 
 import com.android.jtknife.core.app.BaseFeature;
-import com.android.jtknife.core.common.logger.Logger;
+import com.elvishew.xlog.XLog;
 
 /**
  * 文件描述
@@ -18,6 +18,6 @@ public class Feature1 extends BaseFeature {
     protected void onCreate(@NonNull View parent, @Nullable Bundle savedInstanceState) {
         super.onCreate(parent, savedInstanceState);
 
-        Logger.i("Feature1 onCreate");
+        XLog.i("Feature1 onCreate");
     }
 }

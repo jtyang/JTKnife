@@ -7,12 +7,12 @@ import android.widget.Button;
 
 import com.android.jtknife.common.app.BaseActivity;
 import com.android.jtknife.core.common.di.InjectBean;
-import com.android.jtknife.core.common.logger.Logger;
 import com.android.jtknife.core.views.ConfirmDialog;
 import com.android.jtknife.model.UserModel;
 import com.android.jtknife.model.entity.UserInfo;
 import com.android.jtknife.modules.feature.FeatureSampleActivity;
 import com.android.jtknife.modules.testlist.SwipeRefreshRecyclerViewSampleActivity;
+import com.elvishew.xlog.XLog;
 
 import butterknife.Bind;
 
@@ -30,7 +30,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         UserInfo userInfo = userModel.login("ttt", "pwd");
-        Logger.i("MainActivity login result:" + userInfo.toString());
+        XLog.i("MainActivity login result:" + userInfo.toString());
     }
 
     @Override

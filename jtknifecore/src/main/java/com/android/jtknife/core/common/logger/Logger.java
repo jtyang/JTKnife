@@ -1,7 +1,6 @@
 package com.android.jtknife.core.common.logger;
 
 import android.text.TextUtils;
-import android.util.Log;
 
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -25,9 +24,9 @@ public class Logger {
 
     private static final String TAG = "JTKnife";
 
-    public static void i(String msg) {
-        Log.i(TAG, msg);
-    }
+//    public static void i(String msg) {
+//        Log.i(TAG, msg);
+//    }
 
     public interface IPrinter {
         void write(Level level, Object obj, String str);
