@@ -10,12 +10,12 @@ import android.graphics.Paint.Style;
 import android.graphics.Typeface;
 import android.support.annotation.ColorInt;
 import android.support.annotation.NonNull;
+import android.support.v7.widget.AppCompatTextView;
 import android.text.Layout;
 import android.text.Layout.Alignment;
 import android.text.StaticLayout;
 import android.text.TextPaint;
 import android.util.AttributeSet;
-import android.widget.TextView;
 
 import com.android.jtknife.core.R;
 
@@ -24,7 +24,7 @@ import com.android.jtknife.core.R;
  * AUTHOR: yangjiantong
  * DATE: 2016/11/9
  */
-public class StrokeTextView extends TextView {
+public class StrokeTextView extends AppCompatTextView {
     private static final int GRAVITY_CENTER = 0;
     private static final int GRAVITY_LEFT = -1;
     private static final String TAG = "StrokeTextView";

@@ -4,4 +4,10 @@
         <attr name="s_color" format="color|reference" />
         <attr name="s_gravity" format="integer" />
     </declare-styleable>
+
+    <declare-styleable name="StrokeTextViewV2">
+        <attr name="s_text_color" format="color|reference" />
+        <attr name="s_stroke_color" format="color|reference" />
+        <attr name="s_size" format="dimension" />
+    </declare-styleable>
 </resources>
