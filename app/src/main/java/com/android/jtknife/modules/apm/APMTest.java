@@ -2,9 +2,6 @@ package com.android.jtknife.modules.apm;
 
 import android.content.Context;
 
-import com.newrelic.agent.android.NewRelic;
-import com.newrelic.agent.android.logging.AgentLog;
-
 /**
  * 国外newrelic apm检测sdk使用
  * AUTHOR: yangjiantong
@@ -16,8 +13,8 @@ import com.newrelic.agent.android.logging.AgentLog;
 public class APMTest {
 
     public void init(Context context) {
-        NewRelic.withApplicationToken("AAa501598268399fb6c02675e9493db0d328bf7f70")
-                .withLogLevel(AgentLog.DEBUG)
-                .start(context.getApplicationContext());
+//        NewRelic.withApplicationToken("AAa501598268399fb6c02675e9493db0d328bf7f70")
+//                .withLogLevel(AgentLog.DEBUG)
+//                .start(context.getApplicationContext());
     }
 }

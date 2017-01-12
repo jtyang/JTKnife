@@ -11,6 +11,7 @@ import com.android.jtknife.core.views.ConfirmDialog;
 import com.android.jtknife.model.UserModel;
 import com.android.jtknife.model.entity.UserInfo;
 import com.android.jtknife.modules.feature.FeatureSampleActivity;
+import com.android.jtknife.modules.live.LiveRoomActivity;
 import com.android.jtknife.modules.testlist.SwipeRefreshRecyclerViewSampleActivity;
 import com.elvishew.xlog.XLog;
 
@@ -22,6 +23,8 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
     Button featureButton;
     @Bind(R.id.swiperefresh_btn)
     Button swipeRefreshButton;
+    @Bind(R.id.liveroom_btn)
+    Button liveRoomButton;
 
     @InjectBean
     UserModel userModel;//InjectBean只能注解对象的实现无参数的构造函数
@@ -42,6 +45,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
     protected void onInitView() {
         featureButton.setOnClickListener(this);
         swipeRefreshButton.setOnClickListener(this);
+        liveRoomButton.setOnClickListener(this);
     }
 
 
@@ -54,6 +58,9 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
             case R.id.swiperefresh_btn:
                 startActivity(new Intent(mContext, SwipeRefreshRecyclerViewSampleActivity.class));
                 break;
+            case R.id.liveroom_btn:
+                startActivity(new Intent(mContext, LiveRoomActivity.class));
+                break;
             default:
                 break;
 
@@ -62,6 +69,11 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
 
     @Override
     public void onBackPressed() {
+//        testConfirmDialog();
+        finish();
+    }
+
+    private void testConfirmDialog() {
         ConfirmDialog confirmDialog = new ConfirmDialog(this, "logout?", "Are you sure logout?");
         confirmDialog.show();
     }
