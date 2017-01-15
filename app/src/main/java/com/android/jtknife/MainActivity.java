@@ -12,6 +12,7 @@ import com.android.jtknife.model.UserModel;
 import com.android.jtknife.model.entity.UserInfo;
 import com.android.jtknife.modules.feature.FeatureSampleActivity;
 import com.android.jtknife.modules.live.LiveRoomActivity;
+import com.android.jtknife.modules.stackblur.StackBlurActivity;
 import com.android.jtknife.modules.testlist.SwipeRefreshRecyclerViewSampleActivity;
 import com.elvishew.xlog.XLog;
 
@@ -25,6 +26,8 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
     Button swipeRefreshButton;
     @Bind(R.id.liveroom_btn)
     Button liveRoomButton;
+    @Bind(R.id.stackblur_btn)
+    Button stackBlurButton;
 
     @InjectBean
     UserModel userModel;//InjectBean只能注解对象的实现无参数的构造函数
@@ -46,6 +49,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
         featureButton.setOnClickListener(this);
         swipeRefreshButton.setOnClickListener(this);
         liveRoomButton.setOnClickListener(this);
+        stackBlurButton.setOnClickListener(this);
     }
 
 
@@ -60,6 +64,9 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
                 break;
             case R.id.liveroom_btn:
                 startActivity(new Intent(mContext, LiveRoomActivity.class));
+                break;
+            case R.id.stackblur_btn:
+                startActivity(new Intent(mContext, StackBlurActivity.class));
                 break;
             default:
                 break;

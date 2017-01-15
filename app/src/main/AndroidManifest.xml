@@ -26,6 +26,9 @@
             android:name=".modules.live.LiveRoomActivity"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="adjustResize|adjustNothing" />
+        <activity
+            android:name=".modules.stackblur.StackBlurActivity"
+            android:screenOrientation="portrait" />
     </application>
 
 </manifest>

@@ -1,4 +1,4 @@
-package com.android.jtknife.core.common.blur;
+package com.android.jtknife.core.common.stackblur;
 
 import android.annotation.TargetApi;
 import android.content.Context;
