@@ -11,7 +11,7 @@ import com.android.jtknife.core.views.ConfirmDialog;
 import com.android.jtknife.model.UserModel;
 import com.android.jtknife.model.entity.UserInfo;
 import com.android.jtknife.modules.feature.FeatureSampleActivity;
-import com.android.jtknife.modules.live.LiveRoomActivity;
+import com.android.jtknife.modules.live.WatchActivity;
 import com.android.jtknife.modules.stackblur.StackBlurActivity;
 import com.android.jtknife.modules.testlist.SwipeRefreshRecyclerViewSampleActivity;
 import com.elvishew.xlog.XLog;
@@ -63,7 +63,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
                 startActivity(new Intent(mContext, SwipeRefreshRecyclerViewSampleActivity.class));
                 break;
             case R.id.liveroom_btn:
-                startActivity(new Intent(mContext, LiveRoomActivity.class));
+                startActivity(new Intent(mContext, WatchActivity.class));
                 break;
             case R.id.stackblur_btn:
                 startActivity(new Intent(mContext, StackBlurActivity.class));
