@@ -9,6 +9,12 @@
         android:layout_height="match_parent"
         android:scaleType="centerCrop"
         android:src="@drawable/meinv" />
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="我是聊天内容。。。"
+        android:layout_above="@+id/bottom_input_layout"
+        android:layout_marginBottom="80dp"/>
 
     <TextView
         android:id="@+id/input_say_text"
@@ -35,7 +41,8 @@
             <EditText
                 android:id="@+id/chat_input_edit"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content" />
+                android:layout_height="wrap_content"
+                android:text="chat..."/>
         </RelativeLayout>
 
         <View
