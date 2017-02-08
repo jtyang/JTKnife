@@ -44,7 +44,7 @@ public class DisplayUtils {
 //    }
 //
 //    public static boolean d(Context context) {
-//        boolean z = true;
+//        boolean BarrageHolder = true;
 //        Resources resources = context.getResources();
 //        int identifier = resources.getIdentifier("config_showNavigationBar", "bool", "android");
 //        if (identifier != 0) {
@@ -59,9 +59,9 @@ public class DisplayUtils {
 //            return z2;
 //        }
 //        if (ViewConfiguration.get(context).hasPermanentMenuKey()) {
-//            z = false;
+//            BarrageHolder = false;
 //        }
-//        return z;
+//        return BarrageHolder;
 //    }
 
     public static int b(Activity activity) {

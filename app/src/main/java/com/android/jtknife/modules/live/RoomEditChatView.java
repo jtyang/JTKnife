@@ -81,7 +81,7 @@ public class RoomEditChatView extends LinearLayout {
                 this.chatInputLayout.setVisibility(View.VISIBLE);
 //                this.b.c(new com.kitty.android.a.f.b(this.d));
                 this.e = true;
-//                this.f.z();
+//                this.f.BarrageHolder();
             }
         }
         else if (height < rect.bottom && this.e) {
