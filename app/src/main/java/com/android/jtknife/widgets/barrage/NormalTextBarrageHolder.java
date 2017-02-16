@@ -1,38 +1,32 @@
-//package com.android.jtknife.widgets.barrage;
-//
-//import android.view.View;
-//
-///**
-// * 文件描述
-// * AUTHOR: yangjiantong
-// * DATE: 2017/2/8
-// */
-//public class NormalTextBarrageHolder extends BarrageView.BarrageHolder {
-//
-//    @Override
-//    public int v() {
-//        return 0;
-//    }
-//
-//    @Override
-//    public void z(View view) {
-//
-//    }
-//
-////    private FrescoTextView BarrageHolder;
-////    public int v() {
-////        return R.layout.layout_normal_text_barrage;
-////    }
-////    public void BarrageHolder(View view) {
-////        this.BarrageHolder = (FrescoTextView) view.findViewById(R.id.tv_message);
-////    }
-////    public void BarrageHolder(AbstractVideoShowActivity abstractVideoShowActivity, LiveVideoMsg liveVideoMsg) {
-////        v.BarrageHolder(abstractVideoShowActivity, this.BarrageHolder, liveVideoMsg, an.k().x().roomId());
-////    }
-////    public int u() {
-////        return 8;
-////    }
-////    public boolean y() {
-////        return TextUtils.isEmpty(this.BarrageHolder.getText());
-////    }
-//}
+package com.android.jtknife.widgets.barrage;
+
+import android.view.View;
+import android.widget.TextView;
+
+import com.android.jtknife.R;
+
+/**
+ * 文件描述
+ * AUTHOR: yangjiantong
+ * DATE: 2017/2/8
+ */
+public class NormalTextBarrageHolder extends BarrageHolder {
+
+    private TextView mTextView;
+
+    @Override
+    public int getLayoutResId() {
+        return R.layout.layout_barrage_normal_item;
+    }
+
+    @Override
+    public void onBindView(View view) {
+        mTextView = (TextView) view.findViewById(R.id.text);
+        mTextView.setText("aaa"+System.currentTimeMillis());
+    }
+
+    @Override
+    public int u() {
+        return 8;
+    }
+}

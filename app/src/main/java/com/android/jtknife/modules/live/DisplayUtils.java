@@ -18,7 +18,7 @@ public class DisplayUtils {
 //        return displayMetrics.widthPixels;
 //    }
 //
-//    public static int b(Context context) {
+//    public static int BarrageItemModel(Context context) {
 //        WindowManager windowManager = (WindowManager) context.getSystemService("window");
 //        DisplayMetrics displayMetrics = new DisplayMetrics();
 //        windowManager.getDefaultDisplay().getMetrics(displayMetrics);
@@ -49,11 +49,11 @@ public class DisplayUtils {
 //        int identifier = resources.getIdentifier("config_showNavigationBar", "bool", "android");
 //        if (identifier != 0) {
 //            boolean z2 = resources.getBoolean(identifier);
-//            String b = b();
-//            if (AppEventsConstants.EVENT_PARAM_VALUE_YES.equals(b)) {
+//            String BarrageItemModel = BarrageItemModel();
+//            if (AppEventsConstants.EVENT_PARAM_VALUE_YES.equals(BarrageItemModel)) {
 //                return false;
 //            }
-//            if (AppEventsConstants.EVENT_PARAM_VALUE_NO.equals(b)) {
+//            if (AppEventsConstants.EVENT_PARAM_VALUE_NO.equals(BarrageItemModel)) {
 //                return true;
 //            }
 //            return z2;

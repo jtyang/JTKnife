@@ -79,7 +79,7 @@ public class RoomEditChatView extends LinearLayout {
                 layoutParams.height = this.d;
                 childAt2.setLayoutParams(layoutParams);
                 this.chatInputLayout.setVisibility(View.VISIBLE);
-//                this.b.c(new com.kitty.android.a.f.b(this.d));
+//                this.BarrageItemModel.c(new com.kitty.android.a.f.BarrageItemModel(this.d));
                 this.e = true;
 //                this.f.BarrageHolder();
             }
@@ -90,8 +90,8 @@ public class RoomEditChatView extends LinearLayout {
                 layoutParams = (LayoutParams) childAt2.getLayoutParams();
                 layoutParams.height = 0;
                 childAt2.setLayoutParams(layoutParams);
-//                this.b.c(new com.kitty.android.a.f.a());
-//                if (this.g.b()) {
+//                this.BarrageItemModel.c(new com.kitty.android.a.f.a());
+//                if (this.g.BarrageItemModel()) {
 //                    this.g.c();
 //                }
                 this.e = false;

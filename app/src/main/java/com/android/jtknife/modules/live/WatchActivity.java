@@ -11,6 +11,12 @@ import android.widget.TextView;
 
 import com.android.jtknife.R;
 import com.android.jtknife.common.app.BaseActivity;
+import com.android.jtknife.core.common.task.WeakHandler;
+import com.android.jtknife.widgets.barrage.BarrageChatModel;
+import com.android.jtknife.widgets.barrage.BarrageHolder;
+import com.android.jtknife.widgets.barrage.BarrageView;
+import com.android.jtknife.widgets.barrage.KittyBarrageView;
+import com.android.jtknife.widgets.barrage.NormalTextBarrageHolder;
 import com.elvishew.xlog.XLog;
 
 import butterknife.Bind;
@@ -26,6 +32,12 @@ public class WatchActivity extends BaseActivity {
     TextView inputSayTextView;
     @Bind(R.id.bottom_input_layout)
     RoomEditChatView roomEditChatView;
+    @Bind(R.id.barrage_screen)
+    BarrageView barrageView;
+    @Bind(R.id.kitty_barrageview)
+    KittyBarrageView kittyBarrageView;
+
+    private WeakHandler mHandler = new WeakHandler();
 
     @Override
     protected int getLayoutResource() {
@@ -45,6 +57,27 @@ public class WatchActivity extends BaseActivity {
 //                toggleInput(roomEditChatView.getEditText(),getBaseContext());
             }
         });
+        mHandler.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                BarrageHolder barrageHolder = new NormalTextBarrageHolder();
+                barrageHolder.onCreateViewHolder(mContext, barrageView);
+                barrageView.z(barrageHolder, 1);
+
+                kittyBarrageView.addBarrage(new BarrageChatModel(1));
+                kittyBarrageView.addBarrage(new BarrageChatModel(2));
+                kittyBarrageView.addBarrage(new BarrageChatModel(3));
+                kittyBarrageView.addBarrage(new BarrageChatModel(4));
+                kittyBarrageView.addBarrage(new BarrageChatModel(5));
+                kittyBarrageView.addBarrage(new BarrageChatModel(6));
+            }
+        }, 3000);
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        mHandler.removeCallbacksAndMessages(null);
     }
 
     protected void toggleInput(EditText editText) {
@@ -60,7 +93,7 @@ public class WatchActivity extends BaseActivity {
     }
 
     public static int a(Activity activity) {
-        XLog.i("a1="+DisplayUtils.a(activity)+"，b="+DisplayUtils.b(activity)+"，c="+DisplayUtils.c(activity));
+        XLog.i("a1=" + DisplayUtils.a(activity) + "，BarrageItemModel=" + DisplayUtils.b(activity) + "，c=" + DisplayUtils.c(activity));
         int a = (DisplayUtils.a(activity) - DisplayUtils.b(activity)) - DisplayUtils.c(activity);
         if (a == 0) {
             return a((Context) activity, 266.0f);
@@ -78,4 +111,5 @@ public class WatchActivity extends BaseActivity {
         }
         return true;
     }
+
 }
