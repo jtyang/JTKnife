@@ -10,6 +10,7 @@ import com.android.jtknife.core.common.di.InjectBean;
 import com.android.jtknife.core.views.ConfirmDialog;
 import com.android.jtknife.model.UserModel;
 import com.android.jtknife.model.entity.UserInfo;
+import com.android.jtknife.modules.banner.BannerActivity;
 import com.android.jtknife.modules.feature.FeatureSampleActivity;
 import com.android.jtknife.modules.live.WatchActivity;
 import com.android.jtknife.modules.stackblur.StackBlurActivity;
@@ -28,6 +29,8 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
     Button liveRoomButton;
     @Bind(R.id.stackblur_btn)
     Button stackBlurButton;
+    @Bind(R.id.banner_btn)
+    Button bannerBtn;
 
     @InjectBean
     UserModel userModel;//InjectBean只能注解对象的实现无参数的构造函数
@@ -50,6 +53,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
         swipeRefreshButton.setOnClickListener(this);
         liveRoomButton.setOnClickListener(this);
         stackBlurButton.setOnClickListener(this);
+        bannerBtn.setOnClickListener(this);
     }
 
 
@@ -67,6 +71,9 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
                 break;
             case R.id.stackblur_btn:
                 startActivity(new Intent(mContext, StackBlurActivity.class));
+                break;
+            case R.id.banner_btn:
+                startActivity(new Intent(mContext, BannerActivity.class));
                 break;
             default:
                 break;
