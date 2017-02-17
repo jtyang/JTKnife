@@ -7,7 +7,7 @@ import com.android.jtknife.R;
 import com.android.jtknife.common.app.BaseActivity;
 import com.android.jtknife.core.utils.DeviceUtils;
 import com.android.jtknife.core.widgets.banner.Banner;
-import com.android.jtknife.modules.banner.loader.FrescoImageLoader;
+import com.android.jtknife.modules.banner.loader.GlideImageLoader;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -34,7 +34,7 @@ public class BannerActivity extends BaseActivity {
         banner.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT,
                 DeviceUtils.getScreenHeight(mContext) / 4));
         banner.setImages(getImageUrls())
-                .setImageLoader(new FrescoImageLoader())
+                .setImageLoader(new GlideImageLoader())
                 .setOnBannerClickListener(new Banner.OnBannerClickListener() {
                     @Override
                     public void OnBannerClick(int position) {

@@ -5,6 +5,7 @@ import android.net.Uri;
 import android.widget.ImageView;
 
 import com.android.jtknife.core.widgets.banner.loader.BannerImageLoader;
+import com.elvishew.xlog.XLog;
 import com.facebook.drawee.view.SimpleDraweeView;
 
 /**
@@ -18,7 +19,9 @@ public class FrescoImageLoader extends BannerImageLoader {
     public void displayImage(Context context, Object path, ImageView imageView) {
         //用fresco加载图片
         Uri uri = Uri.parse((String) path);
-        imageView.setImageURI(uri);
+        SimpleDraweeView sd = (SimpleDraweeView) imageView;
+        sd.setImageURI(uri);
+        XLog.i("uri=" + uri);
     }
 
     //提供createImageView 方法，方便fresco自定义ImageView
