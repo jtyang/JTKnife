@@ -13,11 +13,16 @@ import com.elvishew.xlog.flattener.ClassicFlattener;
 import com.elvishew.xlog.printer.Printer;
 import com.elvishew.xlog.printer.file.FilePrinter;
 import com.elvishew.xlog.printer.file.naming.DateFileNameGenerator;
+import com.facebook.common.logging.FLog;
 import com.facebook.drawee.backends.pipeline.DraweeConfig;
 import com.facebook.drawee.backends.pipeline.Fresco;
 import com.facebook.imagepipeline.core.ImagePipelineConfig;
+import com.facebook.imagepipeline.listener.RequestListener;
+import com.facebook.imagepipeline.listener.RequestLoggingListener;
 
 import java.io.File;
+import java.util.HashSet;
+import java.util.Set;
 
 /**
  * 文件描述
@@ -87,9 +92,24 @@ public class BaseApplication extends Application {
                 new ScrollPerfExecutorSupplier(NUMBER_OF_PROCESSORS, 2));
         imagePipelineConfigBuilder.experiment().setDecodeCancellationEnabled(true);
         DraweeConfig draweeConfig = DraweeConfig.newBuilder()
-                .setDrawDebugOverlay(true)
+                .setDrawDebugOverlay(false)
                 .build();
-        Fresco.initialize(this, imagePipelineConfigBuilder.build(), draweeConfig);
+//        Fresco.initialize(this, imagePipelineConfigBuilder.build(), draweeConfig);
+        Fresco.initialize(this);
+        XLog.i("init fresco success!!!");
     }
 
+    private void initFresco2(){
+        FLog.setMinimumLoggingLevel(FLog.VERBOSE);
+        Set<RequestListener> listeners = new HashSet<>();
+        listeners.add(new RequestLoggingListener());
+        ImagePipelineConfig config = ImagePipelineConfig.newBuilder(this)
+                .setRequestListeners(listeners)
+                .build();
+        DraweeConfig draweeConfig = DraweeConfig.newBuilder()
+                .setDrawDebugOverlay(false)
+                .build();
+        Fresco.initialize(mContext, config, draweeConfig);
+        XLog.i("init fresco2 success");
+    }
 }

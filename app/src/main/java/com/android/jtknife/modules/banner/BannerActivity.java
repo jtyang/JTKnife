@@ -1,13 +1,19 @@
 package com.android.jtknife.modules.banner;
 
+import android.net.Uri;
+import android.support.annotation.IdRes;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.Toast;
 
 import com.android.jtknife.R;
 import com.android.jtknife.common.app.BaseActivity;
+import com.android.jtknife.core.common.imageloader.FrescoImageView;
 import com.android.jtknife.core.utils.DeviceUtils;
 import com.android.jtknife.core.widgets.banner.Banner;
-import com.android.jtknife.modules.banner.loader.GlideImageLoader;
+import com.android.jtknife.modules.banner.loader.FrescoImageLoader;
+import com.facebook.drawee.drawable.ProgressBarDrawable;
+import com.facebook.drawee.view.SimpleDraweeView;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -23,6 +29,8 @@ public class BannerActivity extends BaseActivity {
 
     @Bind(R.id.banner)
     Banner banner;
+    @Bind(R.id.fresco_image)
+    FrescoImageView frescoImageView;
 
     @Override
     protected int getLayoutResource() {
@@ -31,10 +39,10 @@ public class BannerActivity extends BaseActivity {
 
     @Override
     protected void onInitView() {
-        banner.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT,
+        banner.setLayoutParams(new RelativeLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT,
                 DeviceUtils.getScreenHeight(mContext) / 4));
         banner.setImages(getImageUrls())
-                .setImageLoader(new GlideImageLoader())
+                .setImageLoader(new FrescoImageLoader())
                 .setOnBannerClickListener(new Banner.OnBannerClickListener() {
                     @Override
                     public void OnBannerClick(int position) {
@@ -43,6 +51,11 @@ public class BannerActivity extends BaseActivity {
                 })
                 .start();
         //todo refresh: banner.update(arrayList);
+
+        Uri uri = Uri.parse("https://www.gstatic.com/webp/gallery/1.sm.jpg");
+        frescoImageView.setImageURI(uri);
+//        findViewAndLoadUri(R.id.fresco_image, "https://www.gstatic.com/webp/gallery/1.sm.jpg");
+
     }
 
     private List<String> getImageUrls() {
@@ -68,5 +81,17 @@ public class BannerActivity extends BaseActivity {
         banner.stopAutoPlay();
     }
 
+
+    private SimpleDraweeView findAndPrepare(@IdRes int viewId) {
+        SimpleDraweeView view = (SimpleDraweeView) findViewById(viewId);
+        view.getHierarchy().setProgressBarImage(new ProgressBarDrawable());
+        return view;
+    }
+
+    private SimpleDraweeView findViewAndLoadUri(@IdRes int viewId, String uri) {
+        SimpleDraweeView view = findAndPrepare(viewId);
+        view.setImageURI(Uri.parse(uri));
+        return view;
+    }
 
 }
