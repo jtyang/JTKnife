@@ -3,6 +3,7 @@ package com.android.jtknife.core.app;
 import android.app.Application;
 import android.content.Context;
 import android.graphics.Bitmap;
+import android.os.Build;
 import android.os.Environment;
 
 import com.android.jtknife.core.common.imageloader.ScrollPerfExecutorSupplier;
@@ -14,6 +15,9 @@ import com.elvishew.xlog.printer.Printer;
 import com.elvishew.xlog.printer.file.FilePrinter;
 import com.elvishew.xlog.printer.file.naming.DateFileNameGenerator;
 import com.facebook.common.logging.FLog;
+import com.facebook.common.memory.MemoryTrimType;
+import com.facebook.common.memory.MemoryTrimmable;
+import com.facebook.common.memory.MemoryTrimmableRegistry;
 import com.facebook.drawee.backends.pipeline.DraweeConfig;
 import com.facebook.drawee.backends.pipeline.Fresco;
 import com.facebook.imagepipeline.core.ImagePipelineConfig;
@@ -21,7 +25,9 @@ import com.facebook.imagepipeline.listener.RequestListener;
 import com.facebook.imagepipeline.listener.RequestLoggingListener;
 
 import java.io.File;
+import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.Iterator;
 import java.util.Set;
 
 /**
@@ -76,7 +82,10 @@ public class BaseApplication extends Application {
         XLog.init(config);
     }
 
+    private MyMemoryTrimmableRegistry myMemoryTrimmableRegistry = new MyMemoryTrimmableRegistry();
+
     private void initFresco() {
+        FLog.setMinimumLoggingLevel(FLog.VERBOSE);
         ImagePipelineConfig.Builder imagePipelineConfigBuilder = ImagePipelineConfig.newBuilder(this)
                 .setResizeAndRotateEnabledForNetwork(false)
                 .setDownsampleEnabled(true);
@@ -91,15 +100,16 @@ public class BaseApplication extends Application {
         imagePipelineConfigBuilder.setExecutorSupplier(
                 new ScrollPerfExecutorSupplier(NUMBER_OF_PROCESSORS, 2));
         imagePipelineConfigBuilder.experiment().setDecodeCancellationEnabled(true);
+        imagePipelineConfigBuilder.setMemoryTrimmableRegistry(myMemoryTrimmableRegistry);//内存策略
         DraweeConfig draweeConfig = DraweeConfig.newBuilder()
                 .setDrawDebugOverlay(false)
                 .build();
-//        Fresco.initialize(this, imagePipelineConfigBuilder.build(), draweeConfig);
-        Fresco.initialize(this);
+        Fresco.initialize(this, imagePipelineConfigBuilder.build(), draweeConfig);
+//        Fresco.initialize(this);
         XLog.i("init fresco success!!!");
     }
 
-    private void initFresco2(){
+    private void initFresco2() {
         FLog.setMinimumLoggingLevel(FLog.VERBOSE);
         Set<RequestListener> listeners = new HashSet<>();
         listeners.add(new RequestLoggingListener());
@@ -111,5 +121,51 @@ public class BaseApplication extends Application {
                 .build();
         Fresco.initialize(mContext, config, draweeConfig);
         XLog.i("init fresco2 success");
+    }
+
+    @Override
+    public void onTerminate() {
+        super.onTerminate();
+
+    }
+
+    @Override
+    public void onTrimMemory(int level) {
+        super.onTrimMemory(level);
+        if (Build.VERSION.SDK_INT >= 16) {
+            myMemoryTrimmableRegistry.trim(level);
+        }
+    }
+
+    private class MyMemoryTrimmableRegistry implements MemoryTrimmableRegistry {
+
+        ArrayList<MemoryTrimmable> memoryTrimmables = new ArrayList<>();
+
+        @Override
+        public void registerMemoryTrimmable(MemoryTrimmable trimmable) {
+            memoryTrimmables.add(trimmable);
+        }
+
+        @Override
+        public void unregisterMemoryTrimmable(MemoryTrimmable trimmable) {
+            memoryTrimmables.remove(trimmable);
+        }
+
+        public void trim(int level) {
+            MemoryTrimType memoryTrimType;
+            if (level >= 40) {
+                memoryTrimType = MemoryTrimType.OnAppBackgrounded;
+            } else if (level >= 10) {
+                memoryTrimType = MemoryTrimType.OnSystemLowMemoryWhileAppInForeground;
+            } else {
+                memoryTrimType = null;
+            }
+            if (memoryTrimType != null) {
+                Iterator it = this.memoryTrimmables.iterator();
+                while (it.hasNext()) {
+                    ((MemoryTrimmable) it.next()).trim(memoryTrimType);
+                }
+            }
+        }
     }
 }

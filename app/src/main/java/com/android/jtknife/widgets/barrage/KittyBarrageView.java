@@ -30,10 +30,10 @@ public class KittyBarrageView extends RelativeLayout implements View.OnClickList
     private Context context;
     private MyHandler myHandler;
     private boolean isCanPlay;
-    private int d;
+    private int currRoadIndex;
     private int e;
     private int f;
-    private float[] g;
+    private float[] roadDelayTimes;
     private LinkedList<BarrageChatModel> barrageChatModels;
 
     private static class MyHandler extends Handler {
@@ -48,7 +48,7 @@ public class KittyBarrageView extends RelativeLayout implements View.OnClickList
             if (barrageView != null) {
                 switch (message.what) {
                     case 1:
-                        barrageView.b();
+                        barrageView.playBarrage();
                         break;
                     default:
                         break;
@@ -59,9 +59,9 @@ public class KittyBarrageView extends RelativeLayout implements View.OnClickList
 
     public class BarrageItemModel {
         public BarrageItemView barrageItemView;
-        public int b;
-        public int c;
-        public int d;
+        public int duration;
+        public int topMargin;
+        public int animEndPosition;
         final /* synthetic */ KittyBarrageView kittyBarrageView;
 
         public BarrageItemModel(KittyBarrageView barrageView) {
@@ -87,8 +87,8 @@ public class KittyBarrageView extends RelativeLayout implements View.OnClickList
     private void init(Context context) {
         this.myHandler = new MyHandler(this);
         this.isCanPlay = true;
-        this.d = 0;
-        this.g = new float[2];
+        this.currRoadIndex = 0;
+        this.roadDelayTimes = new float[2];
         this.barrageChatModels = new LinkedList();
         this.context = context;
     }
@@ -106,41 +106,41 @@ public class KittyBarrageView extends RelativeLayout implements View.OnClickList
         }
     }
 
-    private void b() {
+    private void playBarrage() {
         if (this.barrageChatModels != null) {
             if (this.barrageChatModels.size() == 0) {
                 this.isCanPlay = true;
                 return;
-            } else if (this.d == 0) {
+            } else if (this.currRoadIndex == 0) {
                 this.myHandler.sendEmptyMessage(1);
             } else {
-                this.myHandler.sendEmptyMessageDelayed(1, (long) ((int) this.g[this.d - 1]));
+                this.myHandler.sendEmptyMessageDelayed(1, (long) ((int) this.roadDelayTimes[this.currRoadIndex - 1]));
             }
         }
-        this.d++;
-        if (this.d > 2) {
-            this.d = 1;
+        this.currRoadIndex++;
+        if (this.currRoadIndex > 2) {
+            this.currRoadIndex = 1;
         }
-        b((BarrageChatModel) this.barrageChatModels.removeFirst());
+        playBarrage(this.barrageChatModels.removeFirst());
     }
 
-    private void b(BarrageChatModel barrageChatModel) {
+    private void playBarrage(BarrageChatModel barrageChatModel) {
         BarrageItemModel barrageItemModel = new BarrageItemModel(this);
         barrageItemModel.barrageItemView = new BarrageItemView(this.context, barrageChatModel);
         barrageItemModel.barrageItemView.setVisibility(View.GONE);
         barrageItemModel.barrageItemView.onFinishInflate();
         barrageItemModel.barrageItemView.setOnClickListener(this);
-        barrageItemModel.d = (int) a(barrageItemModel, barrageChatModel.getContent());
-        barrageItemModel.b = a((float) barrageItemModel.d);
-        barrageItemModel.c = (2 - this.d) * dipToPx(42);
+        barrageItemModel.animEndPosition = (int) getAnimEndPosition(barrageItemModel, barrageChatModel.getContent());
+        barrageItemModel.duration = getBarrageItemDuration((float) barrageItemModel.animEndPosition);
+        barrageItemModel.topMargin = (2 - this.currRoadIndex) * dipToPx(42);
         playAnim(barrageItemModel);
     }
 
     private void playAnim(final BarrageItemModel barrageItemModel) {
         int right = (getRight() - getLeft()) - getPaddingLeft();
         LayoutParams layoutParams = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT, RelativeLayout.LayoutParams.WRAP_CONTENT);
-        layoutParams.addRule(10);
-        layoutParams.topMargin = barrageItemModel.c;
+        layoutParams.addRule(RelativeLayout.ALIGN_PARENT_TOP);
+        layoutParams.topMargin = barrageItemModel.topMargin;
         addView(barrageItemModel.barrageItemView, layoutParams);
         ObjectAnimator animator = getAnimator(barrageItemModel, right);
         animator.addListener(new AnimatorListenerAdapter() {
@@ -159,17 +159,19 @@ public class KittyBarrageView extends RelativeLayout implements View.OnClickList
             }
         });
         animator.start();
-        this.g[this.d - 1] = (((float) barrageItemModel.d) / (((float) right) + ((float) barrageItemModel.d))) * ((float) barrageItemModel.b);
+        this.roadDelayTimes[this.currRoadIndex - 1] = (((float) barrageItemModel.animEndPosition) / (((float) right) + ((float) barrageItemModel.animEndPosition))) * ((float) barrageItemModel.duration);
     }
 
-    private ObjectAnimator getAnimator(BarrageItemModel bVar, int i) {
-        ObjectAnimator ofFloat = ObjectAnimator.ofFloat(bVar.barrageItemView, "translationX", new float[]{(float) i, (float) (-bVar.d)});
-        ofFloat.setDuration((long) bVar.b);
+    private ObjectAnimator getAnimator(BarrageItemModel barrageItemModel, int startPosition) {
+        ObjectAnimator ofFloat = ObjectAnimator.ofFloat(barrageItemModel.barrageItemView,
+                "translationX",
+                new float[]{(float) startPosition, (float) (-barrageItemModel.animEndPosition)});
+        ofFloat.setDuration((long) barrageItemModel.duration);
         ofFloat.setInterpolator(new LinearInterpolator());
         return ofFloat;
     }
 
-    private float a(BarrageItemModel barrageItemModel, String str) {
+    private float getAnimEndPosition(BarrageItemModel barrageItemModel, String str) {
         this.e = (int) getContext().getResources().getDimension(R.dimen.barrage_item_minWidth);
         this.f = ((int) getContext().getResources().getDimension(R.dimen.barrage_item_height)) + dipToPx(20);
         try {
@@ -184,11 +186,11 @@ public class KittyBarrageView extends RelativeLayout implements View.OnClickList
         }
     }
 
-    private int a(float f) {
-        if (f >= ((float) getScreenWidth(getContext())) * 1.5f) {
-            return (int) ((f * 6.0f) + (Math.abs(2.0f - (f / ((float) this.e))) * f));
+    private int getBarrageItemDuration(float animEndPosition) {
+        if (animEndPosition >= ((float) getScreenWidth(getContext())) * 1.5f) {
+            return (int) ((animEndPosition * 6.0f) + (Math.abs(2.0f - (animEndPosition / ((float) this.e))) * animEndPosition));
         }
-        return (int) ((f * 6.0f) + ((5.0f * f) * Math.abs(2.0f - (f / ((float) this.e)))));
+        return (int) ((animEndPosition * 6.0f) + ((5.0f * animEndPosition) * Math.abs(2.0f - (animEndPosition / ((float) this.e)))));
     }
 
     public void clear() {

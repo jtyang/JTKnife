@@ -60,6 +60,7 @@ dependencies {
     compile 'com.squareup.okhttp3:okhttp:3.3.1'
 
     compile 'com.facebook.fresco:fresco:1.1.0'
+    compile "com.facebook.fresco:imagepipeline-okhttp3:0.12.0+"
     compile 'jp.wasabeef:fresco-processors:2.0.0'
 
     //https://github.com/elvishew/xLog
