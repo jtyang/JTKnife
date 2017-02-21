@@ -417,6 +417,13 @@ public class Banner extends FrameLayout implements ViewPager.OnPageChangeListene
 
 
     private void setData() {
+        if (count == 0 && adapter != null) {
+            // TODO: 2017/2/21 clear viewpager adapter data
+//            viewPager.removeAllViews();
+//            viewPager.setAdapter(null);
+//            viewPager.addOnPageChangeListener(null);
+            return;
+        }
         currentItem = 1;
         if (adapter == null) {
             adapter = new BannerPagerAdapter();
@@ -437,6 +444,9 @@ public class Banner extends FrameLayout implements ViewPager.OnPageChangeListene
 
     public void startAutoPlay() {
         handler.removeCallbacks(task);
+        if (count < 2) {
+            return;
+        }
         handler.postDelayed(task, delayTime);
     }
 
@@ -483,6 +493,7 @@ public class Banner extends FrameLayout implements ViewPager.OnPageChangeListene
      * @return 下标从0开始
      */
     public int toRealPosition(int position) {
+        if (count == 0) return -1;
         int realPosition = (position - 1) % count;
         if (realPosition < 0)
             realPosition += count;
@@ -567,6 +578,7 @@ public class Banner extends FrameLayout implements ViewPager.OnPageChangeListene
         if (mOnPageChangeListener != null) {
             mOnPageChangeListener.onPageSelected(position);
         }
+        if (count == 0) return;
         if (bannerStyle == BannerConfig.CIRCLE_INDICATOR ||
                 bannerStyle == BannerConfig.CIRCLE_INDICATOR_TITLE ||
                 bannerStyle == BannerConfig.CIRCLE_INDICATOR_TITLE_INSIDE) {

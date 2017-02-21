@@ -9,6 +9,7 @@ import android.widget.Toast;
 import com.android.jtknife.R;
 import com.android.jtknife.common.app.BaseActivity;
 import com.android.jtknife.core.common.imageloader.FrescoImageView;
+import com.android.jtknife.core.common.task.WeakHandler;
 import com.android.jtknife.core.utils.DeviceUtils;
 import com.android.jtknife.core.widgets.banner.Banner;
 import com.android.jtknife.modules.banner.loader.FrescoImageLoader;
@@ -32,6 +33,8 @@ public class BannerActivity extends BaseActivity {
     @Bind(R.id.fresco_image)
     FrescoImageView frescoImageView;
 
+    WeakHandler mHandler = new WeakHandler();
+
     @Override
     protected int getLayoutResource() {
         return R.layout.activity_banner;
@@ -51,9 +54,16 @@ public class BannerActivity extends BaseActivity {
                 })
                 .start();
         //todo refresh: banner.update(arrayList);
+        mHandler.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                if (banner != null)
+                    banner.update(new ArrayList<>());
+            }
+        }, 3000);
 
         Uri uri = Uri.parse("https://www.gstatic.com/webp/gallery/1.sm.jpg");
-        frescoImageView.setImageURI(uri);
+        frescoImageView.setDefaultAndErrorImageResId(R.drawable.meinv).setBlurImage(uri.toString());
 //        findViewAndLoadUri(R.id.fresco_image, "https://www.gstatic.com/webp/gallery/1.sm.jpg");
 
     }

@@ -7,14 +7,19 @@ import android.util.AttributeSet;
 
 import com.facebook.common.util.UriUtil;
 import com.facebook.drawee.backends.pipeline.Fresco;
+import com.facebook.drawee.backends.pipeline.PipelineDraweeController;
+import com.facebook.drawee.backends.pipeline.PipelineDraweeControllerBuilder;
 import com.facebook.drawee.controller.ControllerListener;
 import com.facebook.drawee.drawable.ScalingUtils;
 import com.facebook.drawee.generic.GenericDraweeHierarchy;
 import com.facebook.drawee.generic.RoundingParams;
 import com.facebook.drawee.interfaces.DraweeController;
 import com.facebook.drawee.view.SimpleDraweeView;
+import com.facebook.imagepipeline.common.ResizeOptions;
 import com.facebook.imagepipeline.request.ImageRequest;
 import com.facebook.imagepipeline.request.ImageRequestBuilder;
+
+import jp.wasabeef.fresco.processors.BlurPostprocessor;
 
 /**
  * 对Fresco中的SimpleDraweeView进一步封装
@@ -81,6 +86,7 @@ public class FrescoImageView extends SimpleDraweeView {
 
     public FrescoImageView(Context context, AttributeSet attrs, int defStyle) {
         super(context, attrs, defStyle);
+        init(context, attrs);
     }
 
     private void init(Context context, AttributeSet attrs) {
@@ -180,6 +186,40 @@ public class FrescoImageView extends SimpleDraweeView {
                 .setOldController(getController())
                 .setControllerListener(listener)
                 .build();
+        setController(controller);
+    }
+
+    ///-----------------
+    public void setImageUrlByLayoutParams(String url) {
+        setImageUrl(url, getLayoutParams().width, getLayoutParams().height);
+    }
+
+    public void setImageUrl(String url, int width, int height) {
+        ImageRequestBuilder imageRequestBuilder = ImageRequestBuilder
+                .newBuilderWithSource(Uri.parse(url))
+                .setResizeOptions(
+                        new ResizeOptions(width, height));
+//        imageRequestBuilder.setPostprocessor(postprocessor);
+        // Create the Builder
+        PipelineDraweeControllerBuilder builder = Fresco.newDraweeControllerBuilder()
+                .setImageRequest(imageRequestBuilder.build());
+        builder.setOldController(getController());
+        setController(builder.build());
+    }
+
+    ///---
+    public void setBlurImage(String url) {
+        ImageRequest request = ImageRequestBuilder
+//                        .newBuilderWithResourceId(R.drawable.demo)
+                .newBuilderWithSource(Uri.parse(url))
+                .setPostprocessor(new BlurPostprocessor(getContext()))
+                .build();
+
+        PipelineDraweeController controller =
+                (PipelineDraweeController) Fresco.newDraweeControllerBuilder()
+                        .setImageRequest(request)
+                        .setOldController(getController())
+                        .build();
         setController(controller);
     }
 
