@@ -28,8 +28,15 @@ import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.List;
 
+import static android.support.v4.view.ViewPager.OnPageChangeListener;
+import static android.support.v4.view.ViewPager.PageTransformer;
+
 /**
- * 文件描述
+ * banner view
+ * 采用的是首尾增加一个view的实现方式
+ * 每次设置数据的时候，往首尾多增加一个,假设有三个数据，则按如下排列
+ * 初次进入setCurrItem为1
+ * 2   0   1   2   0
  * AUTHOR: yangjiantong
  * DATE: 2016/11/11
  * ref:https://github.com/youth5201314/banner
@@ -66,10 +73,12 @@ public class Banner extends FrameLayout implements ViewPager.OnPageChangeListene
     private LinearLayout indicator, indicatorInside, titleView;
     private ImageLoaderInterface imageLoader;
     private BannerPagerAdapter adapter;
-    private ViewPager.OnPageChangeListener mOnPageChangeListener;
+    private OnPageChangeListener mOnPageChangeListener;
     private BannerScroller mScroller;
-    private OnBannerClickListener listener;
+    private OnBannerListener bannerListener;
+    private OnBannerListener listener;
     private DisplayMetrics dm;
+
     private WeakHandler handler = new WeakHandler();
 
     public Banner(Context context) {
@@ -116,9 +125,9 @@ public class Banner extends FrameLayout implements ViewPager.OnPageChangeListene
     private void initView(Context context, AttributeSet attrs) {
         imageViews.clear();
         View view = LayoutInflater.from(context).inflate(R.layout.layout_banner, this, true);
-        viewPager = (ViewPagerEx) view.findViewById(R.id.viewpager);
+        viewPager = (ViewPagerEx) view.findViewById(R.id.bannerViewPager);
         titleView = (LinearLayout) view.findViewById(R.id.titleView);
-        indicator = (LinearLayout) view.findViewById(R.id.indicator);
+        indicator = (LinearLayout) view.findViewById(R.id.circleIndicator);
         indicatorInside = (LinearLayout) view.findViewById(R.id.indicatorInside);
         bannerTitle = (TextView) view.findViewById(R.id.bannerTitle);
         numIndicator = (TextView) view.findViewById(R.id.numIndicator);
@@ -127,6 +136,9 @@ public class Banner extends FrameLayout implements ViewPager.OnPageChangeListene
         initViewPagerScroll();
     }
 
+    /**
+     * 设置ViewPager的滑动速度
+     */
     private void initViewPagerScroll() {
         try {
             Field mField = ViewPager.class.getDeclaredField("mScroller");
@@ -138,6 +150,7 @@ public class Banner extends FrameLayout implements ViewPager.OnPageChangeListene
             Log.e(tag, e.getMessage());
         }
     }
+
 
     public Banner isAutoPlay(boolean isAutoPlay) {
         this.isAutoPlay = isAutoPlay;
@@ -169,7 +182,7 @@ public class Banner extends FrameLayout implements ViewPager.OnPageChangeListene
         return this;
     }
 
-    public Banner setBannerAnimation(Class<? extends ViewPager.PageTransformer> transformer) {
+    public Banner setBannerAnimation(Class<? extends PageTransformer> transformer) {
         try {
             setPageTransformer(true, transformer.newInstance());
         } catch (Exception e) {
@@ -194,7 +207,7 @@ public class Banner extends FrameLayout implements ViewPager.OnPageChangeListene
     }
 
     /**
-     * Set a {@link ViewPager.PageTransformer} that will be called for each attached page whenever
+     * Set a {@link PageTransformer} that will be called for each attached page whenever
      * the scroll position is changed. This allows the application to apply custom property
      * transformations to each page, overriding the default sliding look and feel.
      *
@@ -203,7 +216,7 @@ public class Banner extends FrameLayout implements ViewPager.OnPageChangeListene
      * @param transformer         PageTransformer that will modify each page's animation properties
      * @return Banner
      */
-    public Banner setPageTransformer(boolean reverseDrawingOrder, ViewPager.PageTransformer transformer) {
+    public Banner setPageTransformer(boolean reverseDrawingOrder, PageTransformer transformer) {
         viewPager.setPageTransformer(reverseDrawingOrder, transformer);
         return this;
     }
@@ -259,8 +272,7 @@ public class Banner extends FrameLayout implements ViewPager.OnPageChangeListene
     public Banner start() {
         setBannerStyleUI();
         setImageList(imageUrls);
-        if (isAutoPlay)
-            startAutoPlay();
+        setData();
         return this;
     }
 
@@ -332,6 +344,7 @@ public class Banner extends FrameLayout implements ViewPager.OnPageChangeListene
             return;
         }
         initImages();
+        //首尾多增加一个 实现循环
         for (int i = 0; i <= count + 1; i++) {
             View imageView = null;
             if (imageLoader != null) {
@@ -355,7 +368,6 @@ public class Banner extends FrameLayout implements ViewPager.OnPageChangeListene
             else
                 Log.e(tag, "Please set images loader.");
         }
-        setData();
     }
 
     private void setScaleType(View imageView) {
@@ -419,19 +431,20 @@ public class Banner extends FrameLayout implements ViewPager.OnPageChangeListene
     private void setData() {
         if (count == 0 && adapter != null) {
             // TODO: 2017/2/21 clear viewpager adapter data
-//            viewPager.removeAllViews();
-//            viewPager.setAdapter(null);
-//            viewPager.addOnPageChangeListener(null);
+            viewPager.removeAllViews();
+            adapter.notifyDataSetChanged();
+            viewPager.setAdapter(null);
+            viewPager.addOnPageChangeListener(null);
             return;
         }
         currentItem = 1;
         if (adapter == null) {
             adapter = new BannerPagerAdapter();
+            viewPager.addOnPageChangeListener(this);
         }
         viewPager.setAdapter(adapter);
         viewPager.setFocusable(true);
         viewPager.setCurrentItem(1);
-        viewPager.addOnPageChangeListener(this);
         if (gravity != -1)
             indicator.setGravity(gravity);
         if (isScroll && count > 1) {
@@ -439,14 +452,13 @@ public class Banner extends FrameLayout implements ViewPager.OnPageChangeListene
         } else {
             viewPager.setScrollable(false);
         }
+        if (isAutoPlay)
+            startAutoPlay();
     }
 
 
     public void startAutoPlay() {
         handler.removeCallbacks(task);
-        if (count < 2) {
-            return;
-        }
         handler.postDelayed(task, delayTime);
     }
 
@@ -520,13 +532,7 @@ public class Banner extends FrameLayout implements ViewPager.OnPageChangeListene
                 view.setOnClickListener(new OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        /**
-                         * 这里不再直接返回position，而是返回图片真实位置，避免越界出现
-                         *
-                         * 由于以前是偷懒直接返回的position，造成从下标1开始，所以这里现在也不好直接改成从0开始，
-                         * 不然以前的使用者都会出问题，所以这里故意+1，希望理解，下次大版本迭代在从0开始，小版本就不改动了
-                         */
-                        listener.OnBannerClick(toRealPosition(position) + 1);
+                        listener.OnBannerClick(toRealPosition(position));
                     }
                 });
             }
@@ -538,6 +544,14 @@ public class Banner extends FrameLayout implements ViewPager.OnPageChangeListene
             container.removeView((View) object);
         }
 
+        @Override
+        public int getItemPosition(Object object) {
+            if (count == 0) {
+                return PagerAdapter.POSITION_NONE;
+            }
+            return super.getItemPosition(object);
+        }
+
     }
 
     @Override
@@ -546,6 +560,7 @@ public class Banner extends FrameLayout implements ViewPager.OnPageChangeListene
             mOnPageChangeListener.onPageScrollStateChanged(state);
         }
         currentItem = viewPager.getCurrentItem();
+        //由于首尾多增加了一个，所以到首尾两个位置的时候需要特殊处理，实现无限循环
         switch (state) {
             case 0://No operation
                 if (currentItem == 0) {
@@ -575,6 +590,7 @@ public class Banner extends FrameLayout implements ViewPager.OnPageChangeListene
 
     @Override
     public void onPageSelected(int position) {
+        Log.e(tag, "----" + position);
         if (mOnPageChangeListener != null) {
             mOnPageChangeListener.onPageSelected(position);
         }
@@ -608,7 +624,13 @@ public class Banner extends FrameLayout implements ViewPager.OnPageChangeListene
 
     }
 
-    public Banner setOnBannerClickListener(OnBannerClickListener listener) {
+    /**
+     * 废弃了旧版接口，新版的接口下标是从1开始，同时解决下标越界问题
+     *
+     * @param listener
+     * @return
+     */
+    public Banner setOnBannerListener(OnBannerListener listener) {
         this.listener = listener;
         return this;
     }
@@ -617,8 +639,12 @@ public class Banner extends FrameLayout implements ViewPager.OnPageChangeListene
         mOnPageChangeListener = onPageChangeListener;
     }
 
+    public void releaseBanner() {
+        handler.removeCallbacksAndMessages(null);
+    }
 
-    public interface OnBannerClickListener {
+
+    public interface OnBannerListener {
         void OnBannerClick(int position);
     }
 

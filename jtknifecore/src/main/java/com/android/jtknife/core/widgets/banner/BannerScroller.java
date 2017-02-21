@@ -5,7 +5,7 @@ import android.view.animation.Interpolator;
 import android.widget.Scroller;
 
 /**
- * 文件描述
+ * 调整viewpager的滑动速度
  * AUTHOR: yangjiantong
  * DATE: 2017/2/16
  */

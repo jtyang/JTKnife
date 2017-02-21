@@ -46,7 +46,7 @@ public class BannerActivity extends BaseActivity {
                 DeviceUtils.getScreenHeight(mContext) / 4));
         banner.setImages(getImageUrls())
                 .setImageLoader(new FrescoImageLoader())
-                .setOnBannerClickListener(new Banner.OnBannerClickListener() {
+                .setOnBannerListener(new Banner.OnBannerListener() {
                     @Override
                     public void OnBannerClick(int position) {
                         Toast.makeText(getApplicationContext(), "你点击了：" + position, Toast.LENGTH_SHORT).show();

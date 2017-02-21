@@ -1,21 +1,24 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:id="@+id/bannerFrame"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/bannerContainer"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:clipChildren="false">
+
 
     <com.android.jtknife.core.widgets.ViewPagerEx
-        android:id="@+id/viewpager"
+        android:id="@+id/bannerViewPager"
         android:layout_width="match_parent"
-        android:layout_height="match_parent" />
+        android:layout_height="match_parent"
+        android:clipChildren="false" />
 
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_gravity="bottom">
+        android:layout_alignParentBottom="true">
 
         <LinearLayout
-            android:id="@+id/indicator"
+            android:id="@+id/circleIndicator"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_gravity="bottom"
@@ -30,19 +33,21 @@
             android:layout_height="40dp"
             android:layout_alignParentRight="true"
             android:layout_margin="8dp"
-            android:background="#000000"
+            android:background="@drawable/black_background"
             android:gravity="center"
             android:text="1/1"
             android:textColor="#ffffff"
             android:visibility="gone" />
+
         <LinearLayout
             android:id="@+id/titleView"
             android:layout_width="match_parent"
             android:layout_height="40dp"
-            android:layout_below="@+id/indicator"
-            android:orientation="horizontal"
+            android:layout_below="@+id/circleIndicator"
             android:background="#44000000"
+            android:orientation="horizontal"
             android:visibility="gone">
+
             <TextView
                 android:id="@+id/bannerTitle"
                 android:layout_width="match_parent"
@@ -51,8 +56,8 @@
                 android:ellipsize="marquee"
                 android:focusable="true"
                 android:focusableInTouchMode="true"
-                android:paddingLeft="10dp"
                 android:gravity="center_vertical"
+                android:paddingLeft="10dp"
                 android:singleLine="true"
                 android:textColor="#ffffff"
                 android:visibility="gone" />
@@ -82,4 +87,4 @@
             </FrameLayout>
         </LinearLayout>
     </RelativeLayout>
-</FrameLayout>
+</RelativeLayout>

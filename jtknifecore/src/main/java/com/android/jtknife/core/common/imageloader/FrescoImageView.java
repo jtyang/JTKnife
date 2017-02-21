@@ -19,7 +19,6 @@ import com.facebook.imagepipeline.common.ResizeOptions;
 import com.facebook.imagepipeline.request.ImageRequest;
 import com.facebook.imagepipeline.request.ImageRequestBuilder;
 
-import jp.wasabeef.fresco.processors.BlurPostprocessor;
 
 /**
  * 对Fresco中的SimpleDraweeView进一步封装
