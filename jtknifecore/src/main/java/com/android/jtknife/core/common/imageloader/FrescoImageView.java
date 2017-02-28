@@ -69,6 +69,9 @@ import com.facebook.imagepipeline.request.ImageRequestBuilder;
  * android:layout_height="wrap_content"
  * fresco:viewAspectRatio="1.33">
  * 也可以在代码中指定显示比例：mSimpleDraweeView.setAspectRatio(1.33f);
+ * <p>
+ * 列表滚动时，暂停和恢复：
+ * Fresco.getImagePipeline().resume() and Fresco.getImagePipeline().pause()
  */
 public class FrescoImageView extends SimpleDraweeView {
 
@@ -92,7 +95,7 @@ public class FrescoImageView extends SimpleDraweeView {
 
     }
 
-    public FrescoImageView setImageResId(@DrawableRes int resourceId) {
+    public FrescoImageView loadImageResId(@DrawableRes int resourceId) {
         setImageURI(UriUtil.getUriForResourceId(resourceId));
         return this;
     }
@@ -136,15 +139,15 @@ public class FrescoImageView extends SimpleDraweeView {
     }
 
     ///-----------
-    public FrescoImageView setAnimatedRes(int animatedRes) {
-        return setAnimatedImageUri(getResUri(animatedRes));
+    public FrescoImageView loadAnimatedRes(int animatedRes) {
+        return loadAnimatedImageUri(getResUri(animatedRes));
     }
 
-    public FrescoImageView setAnimatedImageUrl(String uri) {
-        return setAnimatedImageUri(Uri.parse(uri));
+    public FrescoImageView loadAnimatedImageUrl(String uri) {
+        return loadAnimatedImageUri(Uri.parse(uri));
     }
 
-    public FrescoImageView setAnimatedImageUri(Uri uri) {
+    public FrescoImageView loadAnimatedImageUri(Uri uri) {
         DraweeController animatedController = Fresco.newDraweeControllerBuilder()
                 .setAutoPlayAnimations(true)
                 .setUri(uri)
@@ -159,7 +162,7 @@ public class FrescoImageView extends SimpleDraweeView {
      *
      * @param url
      */
-    public void setProgressJpg(String url) {
+    public void loadProgressJpg(String url) {
         ImageRequest request = ImageRequestBuilder.newBuilderWithSource(
                 Uri.parse(url))
                 .setProgressiveRenderingEnabled(true)
@@ -178,7 +181,7 @@ public class FrescoImageView extends SimpleDraweeView {
      * @param url
      * @param listener
      */
-    public void setImageUrl(String url, ControllerListener listener) {
+    public void loadImageUrl(String url, ControllerListener listener) {
         DraweeController controller = Fresco.newDraweeControllerBuilder()
                 .setUri(Uri.parse(url))
 //                .setTapToRetryEnabled(true)
@@ -189,11 +192,11 @@ public class FrescoImageView extends SimpleDraweeView {
     }
 
     ///-----------------
-    public void setImageUrlByLayoutParams(String url) {
-        setImageUrl(url, getLayoutParams().width, getLayoutParams().height);
+    public void loadImageUrlByLayoutParams(String url) {
+        loadImageUrl(url, getLayoutParams().width, getLayoutParams().height);
     }
 
-    public void setImageUrl(String url, int width, int height) {
+    public void loadImageUrl(String url, int width, int height) {
         ImageRequestBuilder imageRequestBuilder = ImageRequestBuilder
                 .newBuilderWithSource(Uri.parse(url))
                 .setResizeOptions(
@@ -207,7 +210,7 @@ public class FrescoImageView extends SimpleDraweeView {
     }
 
     ///---
-    public void setBlurImage(String url) {
+    public void loadBlurImage(String url) {
         ImageRequest request = ImageRequestBuilder
 //                        .newBuilderWithResourceId(R.drawable.demo)
                 .newBuilderWithSource(Uri.parse(url))

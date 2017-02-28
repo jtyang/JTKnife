@@ -2,11 +2,10 @@ package com.android.jtknife.core.app;
 
 import android.app.Application;
 import android.content.Context;
-import android.graphics.Bitmap;
 import android.os.Build;
 import android.os.Environment;
 
-import com.android.jtknife.core.common.imageloader.ScrollPerfExecutorSupplier;
+import com.android.jtknife.core.common.imageloader.config.ImagePipelineConfigFactory;
 import com.elvishew.xlog.LogConfiguration;
 import com.elvishew.xlog.LogLevel;
 import com.elvishew.xlog.XLog;
@@ -52,8 +51,10 @@ public class BaseApplication extends Application {
         initConfig();
     }
 
+
     private void initConfig() {
         initLog();
+        initHttp();
         initFresco();
     }
 
@@ -82,34 +83,32 @@ public class BaseApplication extends Application {
         XLog.init(config);
     }
 
-    private MyMemoryTrimmableRegistry myMemoryTrimmableRegistry = new MyMemoryTrimmableRegistry();
+    private void initHttp() {
 
-    private void initFresco() {
-        FLog.setMinimumLoggingLevel(FLog.VERBOSE);
-        ImagePipelineConfig.Builder imagePipelineConfigBuilder = ImagePipelineConfig.newBuilder(this)
-                .setResizeAndRotateEnabledForNetwork(false)
-                .setDownsampleEnabled(true);
-        //Downsampling，要不要向下采样,它处理图片的速度比常规的裁剪scaling更快，
-        // 并且同时支持PNG，JPG以及WEP格式的图片，非常强大,与ResizeOptions配合使用
-
-        //如果不是重量级图片应用,就用这个省点内存吧.默认是RGB_888
-        imagePipelineConfigBuilder.setBitmapsConfig(Bitmap.Config.RGB_565);
-
-        imagePipelineConfigBuilder.experiment().setWebpSupportEnabled(true);
-
-        imagePipelineConfigBuilder.setExecutorSupplier(
-                new ScrollPerfExecutorSupplier(NUMBER_OF_PROCESSORS, 2));
-        imagePipelineConfigBuilder.experiment().setDecodeCancellationEnabled(true);
-        imagePipelineConfigBuilder.setMemoryTrimmableRegistry(myMemoryTrimmableRegistry);//内存策略
-        DraweeConfig draweeConfig = DraweeConfig.newBuilder()
-                .setDrawDebugOverlay(false)
-                .build();
-        Fresco.initialize(this, imagePipelineConfigBuilder.build(), draweeConfig);
-//        Fresco.initialize(this);
-        XLog.i("init fresco success!!!");
     }
 
-    private void initFresco2() {
+    private MyMemoryTrimmableRegistry mMemoryTrimmableRegistry = new MyMemoryTrimmableRegistry();
+
+    private void initFresco() {
+        FLog.setMinimumLoggingLevel(FLog.DEBUG);
+//        ImagePipelineConfig.Builder imagePipelineConfigBuilder = ImagePipelineConfig.newBuilder(this)
+//                .setResizeAndRotateEnabledForNetwork(false)
+//                .setDownsampleEnabled(true);//Downsample：向下采样,它处理图片的速度比常规的裁剪scaling更快,且同时支持PNG，JPG以及WEP格式的图片，非常强大,与ResizeOptions配合使用
+//        imagePipelineConfigBuilder.setBitmapsConfig(Bitmap.Config.RGB_565);//如果不是重量级图片应用,就用这个省点内存吧.默认是RGB_888
+//        imagePipelineConfigBuilder.experiment().setWebpSupportEnabled(true);
+//        imagePipelineConfigBuilder.setExecutorSupplier(
+//                new ScrollPerfExecutorSupplier(NUMBER_OF_PROCESSORS, 2));
+//        imagePipelineConfigBuilder.experiment().setDecodeCancellationEnabled(true);
+//        imagePipelineConfigBuilder.setMemoryTrimmableRegistry(mMemoryTrimmableRegistry);//内存策略
+//        DraweeConfig draweeConfig = DraweeConfig.newBuilder()
+//                .setDrawDebugOverlay(false)
+//                .build();
+//        Fresco.initialize(this, imagePipelineConfigBuilder.build(), draweeConfig);
+        Fresco.initialize(mContext, ImagePipelineConfigFactory.getImagePipelineConfig(mContext, mMemoryTrimmableRegistry));
+        XLog.i("init fresco success");
+    }
+
+    private void initFresco_V2() {
         FLog.setMinimumLoggingLevel(FLog.VERBOSE);
         Set<RequestListener> listeners = new HashSet<>();
         listeners.add(new RequestLoggingListener());
@@ -126,14 +125,13 @@ public class BaseApplication extends Application {
     @Override
     public void onTerminate() {
         super.onTerminate();
-
     }
 
     @Override
     public void onTrimMemory(int level) {
         super.onTrimMemory(level);
         if (Build.VERSION.SDK_INT >= 16) {
-            myMemoryTrimmableRegistry.trim(level);
+            mMemoryTrimmableRegistry.trim(level);
         }
     }
 

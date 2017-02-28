@@ -57,8 +57,11 @@ public class BannerActivity extends BaseActivity {
         mHandler.postDelayed(new Runnable() {
             @Override
             public void run() {
-                if (banner != null)
-                    banner.update(new ArrayList<>());
+                if (banner != null){
+                    List<String> list = new ArrayList<>();
+                    list.add("https://www.gstatic.com/webp/gallery/1.sm.jpg");
+                    banner.update(list);
+                }
             }
         }, 3000);
 
