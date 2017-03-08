@@ -15,6 +15,7 @@ import com.android.jtknife.modules.feature.FeatureSampleActivity;
 import com.android.jtknife.modules.live.WatchActivity;
 import com.android.jtknife.modules.stackblur.StackBlurActivity;
 import com.android.jtknife.modules.testlist.SwipeRefreshRecyclerViewSampleActivity;
+import com.android.jtknife.modules.topactivity.JTService;
 import com.elvishew.xlog.XLog;
 
 import butterknife.Bind;
@@ -40,6 +41,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
         super.onCreate(savedInstanceState);
         UserInfo userInfo = userModel.login("ttt", "pwd");
         XLog.i("MainActivity login result:" + userInfo.toString());
+        startService();
     }
 
     @Override
@@ -54,6 +56,11 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
         liveRoomButton.setOnClickListener(this);
         stackBlurButton.setOnClickListener(this);
         bannerBtn.setOnClickListener(this);
+    }
+
+    private void startService() {
+        Intent intent = new Intent(mContext, JTService.class);
+        startService(intent);
     }
 
 
@@ -85,6 +92,11 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
     public void onBackPressed() {
 //        testConfirmDialog();
         finish();
+    }
+
+    @Override
+    public ActivityAnimType getActivityAnimType() {
+        return ActivityAnimType.RIGHT;
     }
 
     private void testConfirmDialog() {

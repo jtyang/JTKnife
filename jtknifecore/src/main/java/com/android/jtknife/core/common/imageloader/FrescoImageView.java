@@ -70,8 +70,23 @@ import com.facebook.imagepipeline.request.ImageRequestBuilder;
  * fresco:viewAspectRatio="1.33">
  * 也可以在代码中指定显示比例：mSimpleDraweeView.setAspectRatio(1.33f);
  * <p>
- * 列表滚动时，暂停和恢复：
- * Fresco.getImagePipeline().resume() and Fresco.getImagePipeline().pause()
+ * ////////////
+ * 暂停和恢复：
+ * Fresco.getImagePipeline().resume() / Fresco.getImagePipeline().pause()
+ * <p>
+ * ///////////
+ * 预加载
+ * 使用预加载时，要预加载到内存并解码的，要注意ResizeOptions，和照片旋转照成的长宽对调。
+ * 1)预缓存到本地文件，但不加载到内存，自动忽略ResizeOptions：
+ * Fresco.getImagePipeline().prefetchToDiskCache(imageRequest, null)
+ * <p>
+ * 2)预加载到内存并解码（不需要立即拿到结果的），受ResizeOptions影响：
+ * Fresco.getImagePipeline().prefetchToBitmapCache(imageRequest, null)
+ * <p>
+ * 3)加载一张图片，并缓存到内存，返回解码的结果，受ResizeOptions影响：
+ * Fresco.getImagePipeline().fetchDecodedImage(imageRequest, null)
+ * 但要注意，返回的DataSource是不能直接拿到结果，需要subscribe DataSource.
+ * ////////////
  */
 public class FrescoImageView extends SimpleDraweeView {
 

@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/gift_sender_container"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <ImageView
+        android:id="@+id/iv_gift_sender"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
+    <!--<com.kitty.android.ui.widget.MarkedImageView-->
+    <!--android:id="@+id/iv_gift_sender"-->
+    <!--android:layout_width="wrap_content"-->
+    <!--android:layout_height="wrap_content"-->
+    <!--android:background="@drawable/profile_avatar_default"-->
+    <!--android:civ_border_color="@color/text_icon"-->
+    <!--android:civ_border_width="@dimen/room_usernums_creator_width"-->
+    <!--android:scaleType="centerCrop" />-->
+
+    <LinearLayout
+        android:id="@+id/gift_info_container"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="top|bottom|center_vertical|fill_vertical|center|fill"
+        android:layout_marginLeft="5dp"
+        android:layout_toRightOf="@+id/iv_gift_sender"
+        android:orientation="vertical"
+        android:paddingRight="5dp">
+
+        <TextView
+            android:id="@+id/txt_gift_sender"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="canvas"
+            android:textColor="@color/white"
+            android:textSize="14sp" />
+
+        <TextView
+            android:id="@+id/txt_gift_desc"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="send a car" />
+    </LinearLayout>
+
+</LinearLayout>

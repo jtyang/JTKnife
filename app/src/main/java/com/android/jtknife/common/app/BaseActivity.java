@@ -15,42 +15,57 @@ public abstract class BaseActivity extends BaseAppCompatActivity {
     @Override
     public void startActivity(Intent intent) {
         super.startActivity(intent);
-        if (isOpenActivityAnimation()) {
-            overridePendingTransitionEnter();
-        }
+        overridePendingTransitionEnter();
     }
 
     @Override
     public void finish() {
         super.finish();
-        if (isOpenActivityAnimation()) {
-            overridePendingTransitionExit();
-        }
+        overridePendingTransitionExit();
     }
 
     @Override
     public void onBackPressed() {
         super.onBackPressed();
-        if (isOpenActivityAnimation()) {
-            overridePendingTransitionExit();
-        }
+        overridePendingTransitionExit();
     }
 
     /**
      * Overrides the pending Activity transition by performing the "Enter" animation.
      */
     protected void overridePendingTransitionEnter() {
-        overridePendingTransition(R.anim.slide_from_right, R.anim.slide_to_left);
+        ActivityAnimType activityAnimType = getActivityAnimType();
+        if (activityAnimType == ActivityAnimType.RIGHT) {
+            overridePendingTransition(R.anim.slide_from_right, R.anim.slide_to_left);
+        } else if (activityAnimType == ActivityAnimType.BOTTOM) {
+            overridePendingTransition(R.anim.activity_bottom_in, R.anim.activity_still);
+        } else {
+        }
+
     }
 
     /**
      * Overrides the pending Activity transition by performing the "Exit" animation.
      */
     protected void overridePendingTransitionExit() {
-        overridePendingTransition(R.anim.slide_from_left, R.anim.slide_to_right);
+        ActivityAnimType activityAnimType = getActivityAnimType();
+        if (activityAnimType == ActivityAnimType.RIGHT) {
+            overridePendingTransition(R.anim.slide_from_left, R.anim.slide_to_right);
+        } else if (activityAnimType == ActivityAnimType.BOTTOM) {
+            overridePendingTransition(R.anim.activity_still, R.anim.activity_bottom_out);
+        } else {
+        }
     }
 
-    public boolean isOpenActivityAnimation() {
-        return true;
+    public ActivityAnimType getActivityAnimType() {
+        return ActivityAnimType.RIGHT;
+    }
+
+    public enum ActivityAnimType {
+        NONE,
+        RIGHT,
+        BOTTOM,
+        TOP,
+        LEFT
     }
 }

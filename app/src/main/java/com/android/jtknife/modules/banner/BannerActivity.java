@@ -66,7 +66,7 @@ public class BannerActivity extends BaseActivity {
         }, 3000);
 
         Uri uri = Uri.parse("https://www.gstatic.com/webp/gallery/1.sm.jpg");
-        frescoImageView.setDefaultAndErrorImageResId(R.drawable.meinv).setBlurImage(uri.toString());
+        frescoImageView.setDefaultAndErrorImageResId(R.drawable.meinv).loadBlurImage(uri.toString());
 //        findViewAndLoadUri(R.id.fresco_image, "https://www.gstatic.com/webp/gallery/1.sm.jpg");
 
     }
