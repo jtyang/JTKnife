@@ -13,6 +13,7 @@ import com.android.jtknife.model.entity.UserInfo;
 import com.android.jtknife.modules.banner.BannerActivity;
 import com.android.jtknife.modules.feature.FeatureSampleActivity;
 import com.android.jtknife.modules.live.WatchActivity;
+import com.android.jtknife.modules.rxjava.RxJavaDemoActivity;
 import com.android.jtknife.modules.stackblur.StackBlurActivity;
 import com.android.jtknife.modules.testlist.SwipeRefreshRecyclerViewSampleActivity;
 import com.android.jtknife.modules.topactivity.JTService;
@@ -32,6 +33,8 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
     Button stackBlurButton;
     @Bind(R.id.banner_btn)
     Button bannerBtn;
+    @Bind(R.id.rxjava_btn)
+    Button rxjavaBtn;
 
     @InjectBean
     UserModel userModel;//InjectBean只能注解对象的实现无参数的构造函数
@@ -41,7 +44,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
         super.onCreate(savedInstanceState);
         UserInfo userInfo = userModel.login("ttt", "pwd");
         XLog.i("MainActivity login result:" + userInfo.toString());
-        startService();
+//        startService();
     }
 
     @Override
@@ -56,6 +59,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
         liveRoomButton.setOnClickListener(this);
         stackBlurButton.setOnClickListener(this);
         bannerBtn.setOnClickListener(this);
+        rxjavaBtn.setOnClickListener(this);
     }
 
     private void startService() {
@@ -81,6 +85,9 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
                 break;
             case R.id.banner_btn:
                 startActivity(new Intent(mContext, BannerActivity.class));
+                break;
+            case R.id.rxjava_btn:
+                startActivity(new Intent(mContext, RxJavaDemoActivity.class));
                 break;
             default:
                 break;
