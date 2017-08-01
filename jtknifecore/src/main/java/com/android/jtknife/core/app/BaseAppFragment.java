@@ -8,7 +8,8 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.android.jtknife.core.common.di.DI;
-import com.android.jtknife.core.common.notification.NotificationCenter;
+
+import butterknife.ButterKnife;
 
 /**
  * 文件描述
@@ -26,19 +27,26 @@ public abstract class BaseAppFragment extends Fragment {
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        NotificationCenter.INSTANCE.addObserver(this);
+//        NotificationCenter.INSTANCE.addObserver(this);
+        int layoutId = getLayoutResource();
+        if (layoutId > 0) {
+            return inflater.inflate(layoutId, null);
+        }
         return super.onCreateView(inflater, container, savedInstanceState);
     }
 
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+        ButterKnife.bind(this, view);
+        onInitView();
     }
 
     @Override
     public void onDestroyView() {
         super.onDestroyView();
-        NotificationCenter.INSTANCE.removeObserver(this);
+//        NotificationCenter.INSTANCE.removeObserver(this);
+        ButterKnife.unbind(this);
     }
 
     @Override

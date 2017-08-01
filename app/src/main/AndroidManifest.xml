@@ -74,6 +74,11 @@
         <activity
             android:name=".modules.rxjava.RxJavaDemoActivity"
             android:screenOrientation="portrait" />
+        <activity
+            android:name=".modules.live.TestInputActivity"
+            android:launchMode="singleTask"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="stateAlwaysHidden|adjustResize" />
 
         <service android:name=".modules.topactivity.JTService" />
     </application>
