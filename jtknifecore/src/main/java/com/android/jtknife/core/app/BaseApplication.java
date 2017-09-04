@@ -4,6 +4,7 @@ import android.app.Application;
 import android.content.Context;
 import android.os.Build;
 import android.os.Environment;
+import android.os.Handler;
 
 import com.android.jtknife.core.common.imageloader.config.ImagePipelineConfigFactory;
 import com.elvishew.xlog.LogConfiguration;
@@ -38,16 +39,19 @@ public class BaseApplication extends Application {
 
     public static final int NUMBER_OF_PROCESSORS = Runtime.getRuntime().availableProcessors();
 
-    private static Context mContext;
+    private static volatile Context mContext;
 
     public static Context getAppContext() {
         return mContext;
     }
 
+    public static volatile Handler applicationHandler;
+
     @Override
     public void onCreate() {
         super.onCreate();
         mContext = getApplicationContext();
+        applicationHandler = new Handler(mContext.getMainLooper());
         initConfig();
     }
 
