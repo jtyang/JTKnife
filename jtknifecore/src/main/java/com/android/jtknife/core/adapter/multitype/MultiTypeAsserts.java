@@ -18,13 +18,12 @@ package com.android.jtknife.core.adapter.multitype;
 
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
-
 import java.util.List;
 
 /**
  * @author drakeet
  */
-public class MultiTypeAsserts {
+public final class MultiTypeAsserts {
 
     private MultiTypeAsserts() {
         throw new AssertionError();
@@ -32,47 +31,47 @@ public class MultiTypeAsserts {
 
 
     /**
-     * Make the exception to occur in your class for debug and index.
+     * Makes the exception to occur in your class for debug and index.
      *
-     * @param adapter The MultiTypeAdapter.
-     * @param items   The items list.
-     * @throws ProviderNotFoundException If check failed.
-     * @throws IllegalArgumentException  If your Items/List is empty.
+     * @param adapter the MultiTypeAdapter
+     * @param items the items list
+     * @throws BinderNotFoundException if check failed
+     * @throws IllegalArgumentException if your Items/List is empty
      */
     @SuppressWarnings("unchecked")
     public static void assertAllRegistered(
-            @NonNull MultiTypeAdapter adapter,
-            @NonNull List<?> items)
-            throws ProviderNotFoundException, IllegalArgumentException, IllegalAccessError {
+        @NonNull MultiTypeAdapter adapter,
+        @NonNull List<?> items)
+        throws BinderNotFoundException, IllegalArgumentException, IllegalAccessError {
 
-        if (items.size() == 0) {
+        if (items.isEmpty()) {
             throw new IllegalArgumentException("Your Items/List is empty.");
         }
         for (Object item : items) {
-            adapter.indexOf(adapter.flattenClass(item));
+            adapter.indexInTypesOf(item);
         }
         /* All passed. */
     }
 
 
     /**
-     * @param recyclerView The RecyclerView.
-     * @param adapter      The MultiTypeAdapter.
-     * @throws IllegalAccessError       The assertHasTheSameAdapter() method must be placed after
-     *                                  recyclerView.setAdapter().
+     * @param recyclerView the RecyclerView
+     * @param adapter the MultiTypeAdapter
+     * @throws IllegalAccessError The assertHasTheSameAdapter() method must be placed after
+     * recyclerView.setAdapter().
      * @throws IllegalArgumentException If your recyclerView's adapter.
-     *                                  is not the sample with the argument adapter.
+     * is not the sample with the argument adapter.
      */
     public static void assertHasTheSameAdapter(
-            @NonNull RecyclerView recyclerView, @NonNull MultiTypeAdapter adapter)
-            throws IllegalArgumentException, IllegalAccessError {
+        @NonNull RecyclerView recyclerView, @NonNull MultiTypeAdapter adapter)
+        throws IllegalArgumentException, IllegalAccessError {
         if (recyclerView.getAdapter() == null) {
-            throw new IllegalAccessError(
-                    "The assertHasTheSameAdapter() method must be placed after recyclerView.setAdapter()");
+            throw new IllegalAccessError("The assertHasTheSameAdapter() method must " +
+                "be placed after recyclerView.setAdapter()");
         }
         if (recyclerView.getAdapter() != adapter) {
             throw new IllegalArgumentException(
-                    "Your recyclerView's adapter is not the sample with the argument adapter.");
+                "Your recyclerView's adapter is not the sample with the argument adapter.");
         }
     }
 }

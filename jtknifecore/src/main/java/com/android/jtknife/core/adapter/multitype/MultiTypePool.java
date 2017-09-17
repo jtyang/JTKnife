@@ -17,85 +17,125 @@
 package com.android.jtknife.core.adapter.multitype;
 
 import android.support.annotation.NonNull;
-import android.util.Log;
 
 import java.util.ArrayList;
+import java.util.List;
 
 /**
+ * An List implementation of TypePool.
+ *
  * @author drakeet
  */
-public final class MultiTypePool implements TypePool {
+public class MultiTypePool implements TypePool {
 
-    private final String TAG = MultiTypePool.class.getSimpleName();
-    private ArrayList<Class<?>> contents;
-    private ArrayList<ItemViewProvider> providers;
+    private @NonNull final List<Class<?>> classes;
+    private @NonNull final List<ItemViewBinder<?, ?>> binders;
+    private @NonNull final List<Linker<?>> linkers;
 
 
+    /**
+     * Constructs a MultiTypePool with default lists.
+     */
     public MultiTypePool() {
-        this.contents = new ArrayList<>();
-        this.providers = new ArrayList<>();
+        this.classes = new ArrayList<>();
+        this.binders = new ArrayList<>();
+        this.linkers = new ArrayList<>();
     }
 
 
+    /**
+     * Constructs a MultiTypePool with default lists and a specified initial capacity.
+     *
+     * @param initialCapacity the initial capacity of the list
+     */
     public MultiTypePool(int initialCapacity) {
-        this.contents = new ArrayList<>(initialCapacity);
-        this.providers = new ArrayList<>(initialCapacity);
+        this.classes = new ArrayList<>(initialCapacity);
+        this.binders = new ArrayList<>(initialCapacity);
+        this.linkers = new ArrayList<>(initialCapacity);
     }
 
 
-    public void register(@NonNull Class<?> clazz, @NonNull ItemViewProvider provider) {
-        if (!contents.contains(clazz)) {
-            contents.add(clazz);
-            providers.add(provider);
-        } else {
-            int index = contents.indexOf(clazz);
-            providers.set(index, provider);
-            Log.w(TAG, "You have registered the " + clazz.getSimpleName() + " type. " +
-                    "It will override the original provider.");
-        }
+    /**
+     * Constructs a MultiTypePool with specified lists.
+     *
+     * @param classes the list for classes
+     * @param binders the list for binders
+     * @param linkers the list for linkers
+     */
+    public MultiTypePool(
+        @NonNull List<Class<?>> classes,
+        @NonNull List<ItemViewBinder<?, ?>> binders,
+        @NonNull List<Linker<?>> linkers) {
+        this.classes = classes;
+        this.binders = binders;
+        this.linkers = linkers;
     }
 
 
     @Override
-    public int indexOf(@NonNull final Class<?> clazz) {
-        int index = contents.indexOf(clazz);
-        if (index >= 0) {
+    public <T> void register(
+        @NonNull Class<? extends T> clazz,
+        @NonNull ItemViewBinder<T, ?> binder,
+        @NonNull Linker<T> linker) {
+        classes.add(clazz);
+        binders.add(binder);
+        linkers.add(linker);
+    }
+
+
+    @Override
+    public boolean unregister(@NonNull Class<?> clazz) {
+        boolean removed = false;
+        while (true) {
+            int index = classes.indexOf(clazz);
+            if (index != -1) {
+                classes.remove(index);
+                binders.remove(index);
+                linkers.remove(index);
+                removed = true;
+            } else {
+                break;
+            }
+        }
+        return removed;
+    }
+
+
+    @Override
+    public int size() {
+        return classes.size();
+    }
+
+
+    @Override
+    public int firstIndexOf(@NonNull final Class<?> clazz) {
+        int index = classes.indexOf(clazz);
+        if (index != -1) {
             return index;
         }
-        for (int i = 0; i < contents.size(); i++) {
-            if (contents.get(i).isAssignableFrom(clazz)) {
+        for (int i = 0; i < classes.size(); i++) {
+            if (classes.get(i).isAssignableFrom(clazz)) {
                 return i;
             }
         }
-        return index;
+        return -1;
     }
 
 
-    @NonNull
-    @Override
-    public ArrayList<Class<?>> getContents() {
-        return contents;
+    @NonNull @Override
+    public Class<?> getClass(int index) {
+        return classes.get(index);
     }
 
 
-    @NonNull
-    @Override
-    public ArrayList<ItemViewProvider> getProviders() {
-        return providers;
+    @NonNull @Override
+    public ItemViewBinder<?, ?> getItemViewBinder(int index) {
+        return binders.get(index);
     }
 
 
-    @NonNull
-    @Override
-    public ItemViewProvider getProviderByIndex(int index) {
-        return providers.get(index);
-    }
-
-
-    @SuppressWarnings("unchecked")
-    @NonNull
-    @Override
-    public <T extends ItemViewProvider> T getProviderByClass(@NonNull final Class<?> clazz) {
-        return (T) getProviderByIndex(indexOf(clazz));
+    @NonNull @Override
+    public Linker<?> getLinker(int index) {
+        return linkers.get(index);
     }
 }

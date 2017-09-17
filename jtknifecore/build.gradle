@@ -64,9 +64,7 @@ dependencies {
     compile 'org.greenrobot:eventbus:3.0.0'
     compile 'com.squareup.okhttp3:okhttp:3.3.1'
 
-    compile 'com.facebook.fresco:fresco:1.1.0'
-    compile 'com.facebook.fresco:animated-base:1.1.0'
-    compile 'com.facebook.fresco:animated-gif:1.1.0'
+    compile 'com.facebook.fresco:fresco:1.5.0'
     compile "com.facebook.fresco:imagepipeline-okhttp3:0.12.0+"
 //    compile 'jp.wasabeef:fresco-processors:2.0.0'
 
