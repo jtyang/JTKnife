@@ -1,1 +1,1 @@
-include ':app', ':jtknifecore'
+include ':app', ':jtknifecore', ':javamodule'

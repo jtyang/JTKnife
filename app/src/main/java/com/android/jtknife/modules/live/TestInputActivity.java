@@ -1,5 +1,7 @@
 package com.android.jtknife.modules.live;
 
+import android.os.Bundle;
+import android.support.annotation.Nullable;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentPagerAdapter;
@@ -33,6 +35,14 @@ public class TestInputActivity extends BaseActivity {
     @Override
     protected int getLayoutResource() {
         return R.layout.activity_testinput;
+    }
+
+    @Override
+    protected void onCreate(@Nullable Bundle savedInstanceState) {
+//        requestWindowFeature(Window.FEATURE_NO_TITLE);
+//        getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
+        super.onCreate(savedInstanceState);
+
     }
 
     @Override

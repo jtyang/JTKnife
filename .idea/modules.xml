@@ -4,6 +4,7 @@
     <modules>
       <module fileurl="file://$PROJECT_DIR$/JTKnife.iml" filepath="$PROJECT_DIR$/JTKnife.iml" />
       <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
+      <module fileurl="file://$PROJECT_DIR$/javamodule/javamodule.iml" filepath="$PROJECT_DIR$/javamodule/javamodule.iml" />
       <module fileurl="file://$PROJECT_DIR$/jtknifecore/jtknifecore.iml" filepath="$PROJECT_DIR$/jtknifecore/jtknifecore.iml" />
     </modules>
   </component>
