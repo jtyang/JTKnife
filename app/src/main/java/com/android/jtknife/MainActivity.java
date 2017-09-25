@@ -12,7 +12,7 @@ import com.android.jtknife.model.UserModel;
 import com.android.jtknife.model.entity.UserInfo;
 import com.android.jtknife.modules.banner.BannerActivity;
 import com.android.jtknife.modules.feature.FeatureSampleActivity;
-import com.android.jtknife.modules.live.TestInputActivity;
+import com.android.jtknife.modules.live.WatchActivity;
 import com.android.jtknife.modules.rxjava.RxJavaDemoActivity;
 import com.android.jtknife.modules.stackblur.StackBlurActivity;
 import com.android.jtknife.modules.testlist.SwipeRefreshRecyclerViewSampleActivity;
@@ -78,7 +78,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
                 startActivity(new Intent(mContext, SwipeRefreshRecyclerViewSampleActivity.class));
                 break;
             case R.id.liveroom_btn:
-                startActivity(new Intent(mContext, TestInputActivity.class));
+                startActivity(new Intent(mContext, WatchActivity.class));
                 break;
             case R.id.stackblur_btn:
                 startActivity(new Intent(mContext, StackBlurActivity.class));

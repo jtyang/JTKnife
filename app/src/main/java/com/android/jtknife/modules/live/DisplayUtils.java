@@ -25,7 +25,7 @@ public class DisplayUtils {
 //        return displayMetrics.heightPixels;
 //    }
 
-    public static int a(Activity activity) {
+    public static int getScreenHeight(Activity activity) {
         Display defaultDisplay = activity.getWindowManager().getDefaultDisplay();
         DisplayMetrics displayMetrics = new DisplayMetrics();
         defaultDisplay.getMetrics(displayMetrics);
@@ -64,13 +64,13 @@ public class DisplayUtils {
 //        return BarrageHolder;
 //    }
 
-    public static int b(Activity activity) {
+    public static int getWindowVisibleDisplayFrameTop(Activity activity) {
         Rect rect = new Rect();
         activity.getWindow().getDecorView().getWindowVisibleDisplayFrame(rect);
         return rect.top;
     }
 
-    public static int c(Activity activity) {
+    public static int getWindowVisibleDisplayFrameHeight(Activity activity) {
         Rect rect = new Rect();
         activity.getWindow().getDecorView().getWindowVisibleDisplayFrame(rect);
         return rect.height();

@@ -6,6 +6,8 @@ import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
+import android.view.Window;
+import android.view.WindowManager;
 
 import com.android.jtknife.R;
 import com.android.jtknife.common.app.BaseActivity;
@@ -39,8 +41,8 @@ public class TestInputActivity extends BaseActivity {
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
-//        requestWindowFeature(Window.FEATURE_NO_TITLE);
-//        getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
+        requestWindowFeature(Window.FEATURE_NO_TITLE);
+        getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
         super.onCreate(savedInstanceState);
 
     }
@@ -49,7 +51,7 @@ public class TestInputActivity extends BaseActivity {
     protected void onInitView() {
 //        fixSizeLayout.setFixSize(DeviceUtils.getScreenWidth(mContext), DeviceUtils.getScreenHeight(mContext));
         fragments.add(new TestInputFragment());
-        fragments.add(new TestInputFragment());
+        fragments.add(new TestInputFragmentV2());
         viewPager.setAdapter(new FragmentPagerAdapter(getSupportFragmentManager()) {
             @Override
             public Fragment getItem(int position) {

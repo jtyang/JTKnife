@@ -2,8 +2,11 @@ package com.android.jtknife.modules.live;
 
 import android.app.Activity;
 import android.content.Context;
+import android.os.Bundle;
+import android.support.annotation.Nullable;
 import android.util.TypedValue;
 import android.view.View;
+import android.view.Window;
 import android.view.WindowManager;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
@@ -42,6 +45,13 @@ public class WatchActivity extends BaseActivity {
     @Override
     protected int getLayoutResource() {
         return R.layout.activity_watch;
+    }
+
+    @Override
+    protected void onCreate(@Nullable Bundle savedInstanceState) {
+        requestWindowFeature(Window.FEATURE_NO_TITLE);
+        getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
+        super.onCreate(savedInstanceState);
     }
 
     @Override
@@ -93,8 +103,8 @@ public class WatchActivity extends BaseActivity {
     }
 
     public static int a(Activity activity) {
-        XLog.i("a1=" + DisplayUtils.a(activity) + "，BarrageItemModel=" + DisplayUtils.b(activity) + "，c=" + DisplayUtils.c(activity));
-        int a = (DisplayUtils.a(activity) - DisplayUtils.b(activity)) - DisplayUtils.c(activity);
+        XLog.i("a1=" + DisplayUtils.getScreenHeight(activity) + "，BarrageItemModel=" + DisplayUtils.getWindowVisibleDisplayFrameTop(activity) + "，c=" + DisplayUtils.getWindowVisibleDisplayFrameHeight(activity));
+        int a = (DisplayUtils.getScreenHeight(activity) - DisplayUtils.getWindowVisibleDisplayFrameTop(activity)) - DisplayUtils.getWindowVisibleDisplayFrameHeight(activity);
         if (a == 0) {
             return a((Context) activity, 266.0f);
         }
@@ -106,7 +116,7 @@ public class WatchActivity extends BaseActivity {
     }
 
     public static boolean b(Activity activity) {
-        if ((DisplayUtils.a(activity) - DisplayUtils.b(activity)) - DisplayUtils.c(activity) <= 0) {
+        if ((DisplayUtils.getScreenHeight(activity) - DisplayUtils.getWindowVisibleDisplayFrameTop(activity)) - DisplayUtils.getWindowVisibleDisplayFrameHeight(activity) <= 0) {
             return false;
         }
         return true;
