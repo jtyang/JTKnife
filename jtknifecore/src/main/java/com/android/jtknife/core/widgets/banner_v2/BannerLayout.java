@@ -272,6 +272,7 @@ public class BannerLayout<T> extends RelativeLayout {
         mAdapter.setUpViewViewPager(mViewPager);
         mAdapter.setPageClickListener(mBannerPageClickListener);
 
+        mViewPager.clearOnPageChangeListeners();
         mViewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
             @Override
             public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
