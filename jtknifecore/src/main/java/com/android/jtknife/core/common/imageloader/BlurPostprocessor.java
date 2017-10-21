@@ -6,6 +6,7 @@ import android.graphics.Canvas;
 import android.graphics.Paint;
 
 import com.android.jtknife.core.common.stackblur.NativeBlurProcess;
+import com.elvishew.xlog.XLog;
 import com.facebook.cache.common.CacheKey;
 import com.facebook.cache.common.SimpleCacheKey;
 import com.facebook.imagepipeline.request.BasePostprocessor;
@@ -65,7 +66,9 @@ public class BlurPostprocessor extends BasePostprocessor {
 //        } else {
 //            blurredBitmap = FastBlur.blur(blurredBitmap, radius, true);
 //        }
+        long start = System.currentTimeMillis();
         blurredBitmap = nativeBlurProcess.blur(blurredBitmap, radius);
+        XLog.i("blur time=" + (System.currentTimeMillis() - start));
 
         Bitmap scaledBitmap =
                 Bitmap.createScaledBitmap(blurredBitmap, dest.getWidth(), dest.getHeight(), true);
