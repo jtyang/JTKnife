@@ -72,6 +72,9 @@
             android:name=".modules.banner.BannerActivity"
             android:screenOrientation="portrait" />
         <activity
+            android:name=".modules.banner.BannerActivityV2"
+            android:screenOrientation="portrait" />
+        <activity
             android:name=".modules.rxjava.RxJavaDemoActivity"
             android:screenOrientation="portrait" />
         <activity

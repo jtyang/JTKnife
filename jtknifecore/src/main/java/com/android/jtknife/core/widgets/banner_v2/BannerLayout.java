@@ -33,7 +33,7 @@ public class BannerLayout<T> extends RelativeLayout {
     private static final int mDelayedTime = 3000;// Banner 切换时间间隔
 
     private ViewPagerEx mViewPager;
-    private BannerPagerAdapter mAdapter;
+    private BannerPagerAdapter mPageAdapter;
 
     private List<T> mDatas;
     private int mCurrentItem = 0;//当前位置
@@ -41,12 +41,12 @@ public class BannerLayout<T> extends RelativeLayout {
     private boolean mIsAutoPlay = true;// 是否自动播放
 
     private LinearLayout mIndicatorContainer;//indicator容器
-    private ArrayList<ImageView> mIndicators = new ArrayList<>();
+    private ArrayList<ImageView> mIndicatorViews = new ArrayList<>();
     private int mIndicatorPaddingLeft = 0;// indicator 距离左边的距离
     private int mIndicatorPaddingRight = 0;//indicator 距离右边的距离
     private int mIndicatorPaddingTop = 0;//indicator 距离上边的距离
     private int mIndicatorPaddingBottom = 0;//indicator 距离下边的距离
-    private int mIndicatorAlign = 1;
+    private int mIndicatorAlign = IndicatorAlign.CENTER;
     private int[] mIndicatorRes = new int[]{R.drawable.indicator_normal, R.drawable.indicator_selected};
 
     private ViewPager.OnPageChangeListener mOnPageChangeListener;
@@ -56,10 +56,11 @@ public class BannerLayout<T> extends RelativeLayout {
     private final Runnable mLoopRunnable = new Runnable() {
         @Override
         public void run() {
+            if (mViewPager == null || mPageAdapter == null) return;
             if (mIsAutoPlay) {
                 mCurrentItem = mViewPager.getCurrentItem();
                 mCurrentItem++;
-                if (mCurrentItem == mAdapter.getCount() - 1) {
+                if (mCurrentItem == mPageAdapter.getCount() - 1) {
                     mCurrentItem = 0;
                     mViewPager.setCurrentItem(mCurrentItem, false);
                     mHandler.postDelayed(this, mDelayedTime);
@@ -100,6 +101,9 @@ public class BannerLayout<T> extends RelativeLayout {
         setIndicatorAlign(IndicatorAlign.CENTER);
     }
 
+    /**
+     * 设置viewpager的滑动速度（反射方式设置）
+     */
     private void initViewPagerScroller() {
         try {
             Field mScroller = ViewPager.class.getDeclaredField("mScroller");
@@ -116,8 +120,8 @@ public class BannerLayout<T> extends RelativeLayout {
      *
      * @param indicatorAlign {@link IndicatorAlign#CENTER }{@link IndicatorAlign#LEFT }{@link IndicatorAlign#RIGHT }
      */
-    public void setIndicatorAlign(IndicatorAlign indicatorAlign) {
-        mIndicatorAlign = indicatorAlign.ordinal();
+    public void setIndicatorAlign(int indicatorAlign) {
+        mIndicatorAlign = indicatorAlign;
         LayoutParams layoutParams = (LayoutParams) mIndicatorContainer.getLayoutParams();
         if (indicatorAlign == IndicatorAlign.LEFT) {
             layoutParams.addRule(RelativeLayout.ALIGN_PARENT_LEFT);
@@ -137,10 +141,10 @@ public class BannerLayout<T> extends RelativeLayout {
      */
     private void initIndicator() {
         mIndicatorContainer.removeAllViews();
-        mIndicators.clear();
+        mIndicatorViews.clear();
         for (int i = 0; i < mDatas.size(); i++) {
             ImageView imageView = new ImageView(getContext());
-            if (mIndicatorAlign == IndicatorAlign.LEFT.ordinal()) {
+            if (mIndicatorAlign == IndicatorAlign.LEFT) {
                 if (i == 0) {
 //                    int paddingLeft = mIsOpenMZEffect ? mIndicatorPaddingLeft+mMZModePadding:mIndicatorPaddingLeft;
                     int paddingLeft = mIndicatorPaddingLeft;
@@ -148,7 +152,7 @@ public class BannerLayout<T> extends RelativeLayout {
                 } else {
                     imageView.setPadding(6, 0, 6, 0);
                 }
-            } else if (mIndicatorAlign == IndicatorAlign.RIGHT.ordinal()) {
+            } else if (mIndicatorAlign == IndicatorAlign.RIGHT) {
                 if (i == mDatas.size() - 1) {
 //                    int paddingRight = mIsOpenMZEffect ? mMZModePadding + mIndicatorPaddingRight:mIndicatorPaddingRight;
                     int paddingRight = mIndicatorPaddingRight;
@@ -166,7 +170,7 @@ public class BannerLayout<T> extends RelativeLayout {
                 imageView.setImageResource(mIndicatorRes[0]);
             }
 
-            mIndicators.add(imageView);
+            mIndicatorViews.add(imageView);
             mIndicatorContainer.addView(imageView);
         }
     }
@@ -207,36 +211,12 @@ public class BannerLayout<T> extends RelativeLayout {
     @Override
     protected void onDetachedFromWindow() {
         super.onDetachedFromWindow();
-        mHandler.removeCallbacks(mLoopRunnable);
-        mHandler.removeCallbacksAndMessages(null);
+        stopBannerLoop();
     }
 
     /******************************************************************************************************/
     /**                             对外API                                                               **/
     /******************************************************************************************************/
-
-    /**
-     * 开始轮播
-     * <p>应该确保在调用用了{@link BannerLayout setPages()} 之后调用这个方法开始轮播</p>
-     */
-    public void start() {
-        // 如果Adapter为null, 说明还没有设置数据，这个时候不应该轮播Banner
-        if (mAdapter == null) {
-            return;
-        }
-        if (mIsCanLoop) {
-            mIsAutoPlay = true;
-            mHandler.postDelayed(mLoopRunnable, mDelayedTime);
-        }
-    }
-
-    /**
-     * 停止轮播
-     */
-    public void pause() {
-        mIsAutoPlay = false;
-        mHandler.removeCallbacks(mLoopRunnable);
-    }
 
     /**
      * 设置数据，这是最重要的一个方法。
@@ -245,38 +225,49 @@ public class BannerLayout<T> extends RelativeLayout {
      * @param datas          Banner 展示的数据集合
      * @param mHolderCreator ViewHolder生成器
      */
-    public void setPages(List<T> datas, BannerHolderCreator mHolderCreator) {
+    public void updateBanner(List<T> datas, BannerHolderCreator mHolderCreator) {
         if (datas == null || mHolderCreator == null) {
             return;
         }
         mDatas = datas;
         //如果在播放，就先让播放停止
-        pause();
+        stopBannerLoop();
+        mViewPager.clearOnPageChangeListeners();
+        mCurrentItem = 0;
+        if (mDatas.size() == 0) {
+            if (mPageAdapter != null) {
+                mViewPager.setAdapter(null);
+                mPageAdapter = null;
+            }
+            mIndicatorContainer.removeAllViews();
+            mIsCanLoop = false;
+            return;
+        }
+        mIsCanLoop = true;
 
         //增加一个逻辑：由于魅族模式会在一个页面展示前后页面的部分，因此，数据集合的长度至少为3,否则，自动为普通Banner模式
         //不管配置的:open_mz_mode 属性的值是否为true
-        if (datas.size() < 3) {
+//        if (datas.size() < 3) {
 //            mIsOpenMZEffect = false;
-            MarginLayoutParams layoutParams = (MarginLayoutParams) mViewPager.getLayoutParams();
-            layoutParams.setMargins(0, 0, 0, 0);
-            mViewPager.setLayoutParams(layoutParams);
-            setClipChildren(true);
-            mViewPager.setClipChildren(true);
-        }
+//            MarginLayoutParams layoutParams = (MarginLayoutParams) mViewPager.getLayoutParams();
+//            layoutParams.setMargins(0, 0, 0, 0);
+//            mViewPager.setLayoutParams(layoutParams);
+//            setClipChildren(true);
+//            mViewPager.setClipChildren(true);
+//        }
 //        setOpenMZEffect();
         // 2017.7.20 fix：将Indicator初始化放在Adapter的初始化之前，解决更新数据变化更新时crush.
         //初始化Indicator
         initIndicator();
 
-        mAdapter = new BannerPagerAdapter<T>(datas, mHolderCreator, mIsCanLoop);
-        mAdapter.setUpViewViewPager(mViewPager);
-        mAdapter.setPageClickListener(mBannerPageClickListener);
+        mPageAdapter = new BannerPagerAdapter<T>(datas, mHolderCreator, mIsCanLoop);
+        mPageAdapter.setUpViewViewPager(mViewPager);
+        mPageAdapter.setPageClickListener(mBannerPageClickListener);
 
-        mViewPager.clearOnPageChangeListeners();
         mViewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
             @Override
             public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
-                int realPosition = position % mIndicators.size();
+                int realPosition = getRealCurrPosition(position);
                 if (mOnPageChangeListener != null) {
                     mOnPageChangeListener.onPageScrolled(realPosition, positionOffset, positionOffsetPixels);
                 }
@@ -287,12 +278,12 @@ public class BannerLayout<T> extends RelativeLayout {
                 mCurrentItem = position;
 
                 // 切换indicator
-                int realSelectPosition = mCurrentItem % mIndicators.size();
+                int realSelectPosition = getRealCurrPosition(mCurrentItem);
                 for (int i = 0; i < mDatas.size(); i++) {
                     if (i == realSelectPosition) {
-                        mIndicators.get(i).setImageResource(mIndicatorRes[1]);
+                        mIndicatorViews.get(i).setImageResource(mIndicatorRes[1]);
                     } else {
-                        mIndicators.get(i).setImageResource(mIndicatorRes[0]);
+                        mIndicatorViews.get(i).setImageResource(mIndicatorRes[0]);
                     }
                 }
                 // 不能直接将mOnPageChangeListener 设置给ViewPager ,否则拿到的position 是原始的positon
@@ -317,11 +308,44 @@ public class BannerLayout<T> extends RelativeLayout {
                     mOnPageChangeListener.onPageScrollStateChanged(state);
                 }
             }
+
+            private int getRealCurrPosition(int currPos) {
+                if (mIndicatorViews.size() > 0) {
+                    return currPos % mIndicatorViews.size();
+                }
+                return 0;
+            }
         });
     }
 
+    /**
+     * 开始轮播
+     * <p>应该确保在调用用了{@link BannerLayout setPages()} 之后调用这个方法开始轮播</p>
+     */
+    public void startBannerLoop() {
+        // 如果Adapter为null, 说明还没有设置数据，这个时候不应该轮播Banner
+        if (mPageAdapter == null) {
+            return;
+        }
+        stopBannerLoop();
+        if (mDatas == null || mDatas.size() < 2) return;
+        if (mIsCanLoop) {
+            mIsAutoPlay = true;
+            mHandler.postDelayed(mLoopRunnable, mDelayedTime);
+        }
+    }
 
-    public void addPageChangeLisnter(ViewPager.OnPageChangeListener onPageChangeListener) {
+    /**
+     * 停止轮播
+     */
+    public void stopBannerLoop() {
+        mIsAutoPlay = false;
+        mHandler.removeCallbacks(mLoopRunnable);
+        mHandler.removeCallbacksAndMessages(null);
+    }
+
+
+    public void addPageChangeListener(ViewPager.OnPageChangeListener onPageChangeListener) {
         mOnPageChangeListener = onPageChangeListener;
     }
 
@@ -336,10 +360,13 @@ public class BannerLayout<T> extends RelativeLayout {
 
     //======================================
 
-    public enum IndicatorAlign {
-        LEFT,//做对齐
-        CENTER,//居中对齐
-        RIGHT //右对齐
+    /**
+     * Indicator对齐方式（左对齐/居中/右对齐）
+     */
+    public interface IndicatorAlign {
+        int LEFT = 0;//做对齐
+        int CENTER = 1;//居中对齐
+        int RIGHT = 2; //右对齐
     }
 
     /**

@@ -57,6 +57,7 @@ public class BannerPagerAdapter<T> extends PagerAdapter {
     private int getStartSelectItem() {
         // 我们设置当前选中的位置为Integer.MAX_VALUE / 2,这样开始就能往左滑动
         // 但是要保证这个值与getRealPosition 的 余数为0，因为要从第一页开始显示
+        if (getRealCount() == 0) return 0;
         int currentItem = getRealCount() * mLooperCountFactor / 2;
         if (currentItem % getRealCount() == 0) {
             return currentItem;
@@ -135,6 +136,7 @@ public class BannerPagerAdapter<T> extends PagerAdapter {
      * @return
      */
     private View getView(int position, ViewGroup container) {
+        if (getRealCount() == 0) return null;
         final int realPosition = position % getRealCount();
         BannerViewHolder holder = null;
         // create holder

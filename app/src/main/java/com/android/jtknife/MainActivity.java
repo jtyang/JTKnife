@@ -10,7 +10,7 @@ import com.android.jtknife.core.common.di.InjectBean;
 import com.android.jtknife.core.views.ConfirmDialog;
 import com.android.jtknife.model.UserModel;
 import com.android.jtknife.model.entity.UserInfo;
-import com.android.jtknife.modules.banner.BannerActivity;
+import com.android.jtknife.modules.banner.BannerActivityV2;
 import com.android.jtknife.modules.feature.FeatureSampleActivity;
 import com.android.jtknife.modules.live.WatchActivity;
 import com.android.jtknife.modules.rxjava.RxJavaDemoActivity;
@@ -84,7 +84,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
                 startActivity(new Intent(mContext, StackBlurActivity.class));
                 break;
             case R.id.banner_btn:
-                startActivity(new Intent(mContext, BannerActivity.class));
+                startActivity(new Intent(mContext, BannerActivityV2.class));
                 break;
             case R.id.rxjava_btn:
                 startActivity(new Intent(mContext, RxJavaDemoActivity.class));
