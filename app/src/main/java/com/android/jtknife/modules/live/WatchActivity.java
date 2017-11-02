@@ -4,9 +4,7 @@ import android.app.Activity;
 import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.util.TypedValue;
 import android.view.View;
-import android.view.Window;
 import android.view.WindowManager;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
@@ -20,7 +18,6 @@ import com.android.jtknife.widgets.barrage.BarrageHolder;
 import com.android.jtknife.widgets.barrage.BarrageView;
 import com.android.jtknife.widgets.barrage.KittyBarrageView;
 import com.android.jtknife.widgets.barrage.NormalTextBarrageHolder;
-import com.elvishew.xlog.XLog;
 
 import butterknife.Bind;
 
@@ -49,14 +46,14 @@ public class WatchActivity extends BaseActivity {
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
-        requestWindowFeature(Window.FEATURE_NO_TITLE);
-        getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
+//        requestWindowFeature(Window.FEATURE_NO_TITLE);
+//        getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
         super.onCreate(savedInstanceState);
     }
 
     @Override
     protected void onInitView() {
-        roomEditChatView.setF(this);
+        roomEditChatView.setActivity(this);
         inputSayTextView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -100,19 +97,6 @@ public class WatchActivity extends BaseActivity {
         InputMethodManager inputMethodManager = (InputMethodManager) context.getSystemService(Context.INPUT_METHOD_SERVICE);
         inputMethodManager.showSoftInput(editText, InputMethodManager.SHOW_FORCED);//2
         inputMethodManager.toggleSoftInput(InputMethodManager.SHOW_FORCED, InputMethodManager.HIDE_IMPLICIT_ONLY);//(2,1)
-    }
-
-    public static int a(Activity activity) {
-        XLog.i("a1=" + DisplayUtils.getScreenHeight(activity) + "，BarrageItemModel=" + DisplayUtils.getWindowVisibleDisplayFrameTop(activity) + "，c=" + DisplayUtils.getWindowVisibleDisplayFrameHeight(activity));
-        int a = (DisplayUtils.getScreenHeight(activity) - DisplayUtils.getWindowVisibleDisplayFrameTop(activity)) - DisplayUtils.getWindowVisibleDisplayFrameHeight(activity);
-        if (a == 0) {
-            return a((Context) activity, 266.0f);
-        }
-        return a;
-    }
-
-    public static int a(Context context, float f) {
-        return (int) TypedValue.applyDimension(1, f, context.getResources().getDisplayMetrics());
     }
 
     public static boolean b(Activity activity) {

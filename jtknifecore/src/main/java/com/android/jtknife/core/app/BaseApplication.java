@@ -67,9 +67,9 @@ public class BaseApplication extends Application {
         LogConfiguration config = new LogConfiguration.Builder()
                 .logLevel(LogLevel.ALL)
                 .tag("JTKnife")                                     // Specify TAG, default: "X-LOG"
-                .t()                                                // Enable thread info, disabled by default
-                .st(2)                                              // Enable stack trace info with depth 2, disabled by default
-                .b()                                                // Enable border, disabled by default
+//                .t()                                                // Enable thread info, disabled by default
+//                .st(2)                                              // Enable stack trace info with depth 2, disabled by default
+//                .b()                                                // Enable border, disabled by default
                 .build();
 
 //        Printer androidPrinter = new AndroidPrinter();                // Printer that print the log using android.util.Log

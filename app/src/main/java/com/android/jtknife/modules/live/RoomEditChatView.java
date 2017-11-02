@@ -19,7 +19,8 @@ import butterknife.Bind;
 import butterknife.ButterKnife;
 
 /**
- * 文件描述
+ * 直播间聊天view
+ * 原理，底部加一个空白view，通过监听键盘高度，设置空白view的高度，撑起聊天输入框
  * AUTHOR: yangjiantong
  * DATE: 2017/2/6
  */
@@ -31,6 +32,9 @@ public class RoomEditChatView extends LinearLayout {
     RelativeLayout chatInputLayout;
     @Bind(R.id.bottom_space_view)
     View bottomSpaceView;
+
+    private int keyboardHeight = 0;
+    private boolean isKeyboardShow = false;
 
     public RoomEditChatView(Context context) {
         super(context);
@@ -55,62 +59,53 @@ public class RoomEditChatView extends LinearLayout {
     protected void onSizeChanged(int w, int h, int oldw, int oldh) {
         super.onSizeChanged(w, h, oldw, oldh);
         if (this.activity != null) {
-            this.d = WatchActivity.a(activity);
+            this.keyboardHeight = getKeyboardHeight(activity);
         }
     }
 
-    int d = 0;
-    private boolean e = false;
     @Override
     protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
-        View childAt = getChildAt(0);
-        View childAt2 = getChildAt(1);
-        int[] iArr = new int[2];
-        childAt.getLocationInWindow(iArr);
-        int height = iArr[1] + childAt.getHeight();
-        Rect rect = new Rect();
-        childAt.getWindowVisibleDisplayFrame(rect);
+        View chatInputLayout = getChildAt(0);
+        View bottomSpaceView = getChildAt(1);
+        int[] chatInputLocation = new int[2];
+        chatInputLayout.getLocationInWindow(chatInputLocation);
+        int height = chatInputLocation[1] + chatInputLayout.getHeight();
+        XLog.i("chatInputLocation y=" + chatInputLocation[1] + ",chatInputLayout height=" + chatInputLayout.getHeight());
+        Rect chatInputRect = new Rect();
+        chatInputLayout.getWindowVisibleDisplayFrame(chatInputRect);
         LayoutParams layoutParams;
-        XLog.i("onMeasuer=====>>>this.d=" + WatchActivity.a(activity) + ",height=" + height + ",rectb=" + rect.bottom);
-        if (height > rect.bottom) {
-            this.d = WatchActivity.a(activity);
-            layoutParams = (LayoutParams) childAt2.getLayoutParams();
-            if (layoutParams.height != this.d) {
-                layoutParams.height = this.d;
-                childAt2.setLayoutParams(layoutParams);
+        XLog.i("onMeasure=====>>>this.keyboardHeight=" + getKeyboardHeight(activity) + ",height=" + height + ",chatInputLayoutBottom=" + chatInputRect.bottom);
+        if (height > chatInputRect.bottom) {
+            this.keyboardHeight = getKeyboardHeight(activity);
+            layoutParams = (LayoutParams) bottomSpaceView.getLayoutParams();
+            if (layoutParams.height != this.keyboardHeight) {
+                layoutParams.height = this.keyboardHeight;
+                bottomSpaceView.setLayoutParams(layoutParams);
                 this.chatInputLayout.setVisibility(View.VISIBLE);
-//                this.BarrageItemModel.c(new com.kitty.android.a.f.BarrageItemModel(this.d));
-                this.e = true;
-//                this.f.BarrageHolder();
+                this.isKeyboardShow = true;
             }
-        }
-        else if (height < rect.bottom && this.e) {
-            int a = WatchActivity.a(activity);
-            if (a == this.d || a == a(266.0f)) {
-                layoutParams = (LayoutParams) childAt2.getLayoutParams();
+        } else if (height < chatInputRect.bottom && this.isKeyboardShow) {
+            int newKeyboardHeight = getKeyboardHeight(activity);
+            if (newKeyboardHeight == this.keyboardHeight || newKeyboardHeight == dp2px(266.0f)) {
+                layoutParams = (LayoutParams) bottomSpaceView.getLayoutParams();
                 layoutParams.height = 0;
-                childAt2.setLayoutParams(layoutParams);
-//                this.BarrageItemModel.c(new com.kitty.android.a.f.a());
-//                if (this.g.BarrageItemModel()) {
-//                    this.g.c();
-//                }
-                this.e = false;
+                bottomSpaceView.setLayoutParams(layoutParams);
+                this.isKeyboardShow = false;
                 this.chatInputLayout.setVisibility(View.INVISIBLE);
-//                this.f.A();
             } else {
-                LayoutParams layoutParams2 = (LayoutParams) childAt2.getLayoutParams();
-                if (layoutParams2.height != a) {
-                    layoutParams2.height = a;
-                    childAt2.setLayoutParams(layoutParams2);
+                LayoutParams layoutParams2 = (LayoutParams) bottomSpaceView.getLayoutParams();
+                if (layoutParams2.height != newKeyboardHeight) {
+                    layoutParams2.height = newKeyboardHeight;
+                    bottomSpaceView.setLayoutParams(layoutParams2);
 //                    this.chatInputLayout.setVisibility(View.VISIBLE);
                 }
             }
         }
 
-
         super.onMeasure(widthMeasureSpec, heightMeasureSpec);
     }
-    public int a(float f) {
+
+    public int dp2px(float f) {
         return (int) TypedValue.applyDimension(1, f, getResources().getDisplayMetrics());
     }
 
@@ -126,21 +121,25 @@ public class RoomEditChatView extends LinearLayout {
         ObjectAnimator.ofFloat(this, "alpha", new float[]{0.0f, 1.0f}).start();
     }
 
-    Activity activity;
+    private Activity activity;
 
-    public void setF(Activity activity) {
+    public void setActivity(Activity activity) {
         this.activity = activity;
     }
 
-    @Override
-    protected void onAttachedToWindow() {
-        super.onAttachedToWindow();
+    public int getKeyboardHeight(Activity activity) {
+        XLog.d("screenHeight=" + DisplayUtils.getScreenHeight(activity) + "，screenWidth=" + DisplayUtils.getScreenWidth(activity));
+        XLog.d("statusBarHeight=" + DisplayUtils.getWindowVisibleDisplayFrameTop(activity) + "，windowVisibleHeight=" + DisplayUtils.getWindowVisibleDisplayFrameHeight(activity));
+        int keyboaryHeight = (DisplayUtils.getScreenHeight(activity) - DisplayUtils.getWindowVisibleDisplayFrameTop(activity)) - DisplayUtils.getWindowVisibleDisplayFrameHeight(activity);
+        XLog.d("keyboard height=" + keyboaryHeight);
+        if (keyboaryHeight == 0) {
+            return dp2px((Context) activity, 266.0f);
+        }
+        return keyboaryHeight;
     }
 
-
-    @Override
-    protected void onDetachedFromWindow() {
-        super.onDetachedFromWindow();
-
+    public static int dp2px(Context context, float f) {
+        return (int) TypedValue.applyDimension(1, f, context.getResources().getDisplayMetrics());
     }
+
 }

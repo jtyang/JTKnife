@@ -31,6 +31,13 @@ public class DisplayUtils {
         defaultDisplay.getMetrics(displayMetrics);
         return displayMetrics.heightPixels;
     }
+
+    public static int getScreenWidth(Activity activity) {
+        Display defaultDisplay = activity.getWindowManager().getDefaultDisplay();
+        DisplayMetrics displayMetrics = new DisplayMetrics();
+        defaultDisplay.getMetrics(displayMetrics);
+        return displayMetrics.widthPixels;
+    }
 //    public static int c(Context context) {
 //        if (!d(context)) {
 //            return 0;
@@ -64,12 +71,23 @@ public class DisplayUtils {
 //        return BarrageHolder;
 //    }
 
+    /**
+     * 获取状态栏高度
+     * @param activity
+     * @return
+     */
     public static int getWindowVisibleDisplayFrameTop(Activity activity) {
         Rect rect = new Rect();
+        //getWindowVisibleDisplayFrame(rect)可以获取到程序显示的区域，包括标题栏，但不包括状态栏,获取后的区域坐标会保存在rect(Rect类型)中
         activity.getWindow().getDecorView().getWindowVisibleDisplayFrame(rect);
         return rect.top;
     }
 
+    /**
+     * 获取程序显示区域高度，不包括状态栏
+     * @param activity
+     * @return
+     */
     public static int getWindowVisibleDisplayFrameHeight(Activity activity) {
         Rect rect = new Rect();
         activity.getWindow().getDecorView().getWindowVisibleDisplayFrame(rect);

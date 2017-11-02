@@ -10,8 +10,6 @@ import android.view.animation.LinearInterpolator;
 import android.view.animation.Transformation;
 import android.view.animation.TranslateAnimation;
 
-import com.elvishew.xlog.XLog;
-
 /**
  * 文件描述
  * AUTHOR: yangjiantong
@@ -72,7 +70,7 @@ public abstract class BarrageHolder {
             this.barrageHolder.itemView.getViewTreeObserver().removeOnPreDrawListener(this);
             int width = this.barrageHolder.barrageView.getWidth();
             int width2 = this.barrageHolder.itemView.getWidth();
-            XLog.i("width=" + width + ",width2=" + width2);//width=720,width2=253
+//            XLog.i("width=" + width + ",width2=" + width2);//width=720,width2=253
             this.barrageHolder.y = new MyTranslateAnimation(this, (float) width, (float) (-width2), (float) this.z, (float) this.z, width, width2);
 //            int z = (int) (((float) (width + width2)) / ((((float) width) * 1.0f) / ((float) BarrageView.z(this.barrageHolder.barrageView))));
             int z = 5000;//// TODO: 2017/2/8 change calc
@@ -101,7 +99,7 @@ public abstract class BarrageHolder {
             float[] fArr = new float[9];
             transformation.getMatrix().getValues(fArr);
             this.x.barrageHolder.v = ((float) this.z) - (fArr[2] + ((float) this.y));
-            XLog.e("MyTranslateAnimation v=" + this.x.barrageHolder.v);
+//            XLog.e("MyTranslateAnimation v=" + this.x.barrageHolder.v);
         }
     }
 
