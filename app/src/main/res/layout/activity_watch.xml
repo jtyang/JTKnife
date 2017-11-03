@@ -9,7 +9,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:scaleType="centerCrop"
-        android:src="@drawable/meinv" />
+        android:src="@drawable/love" />
 
     <com.android.jtknife.widgets.barrage.BarrageView
         android:id="@+id/barrage_screen"
@@ -17,21 +17,20 @@
         android:layout_height="200dp"
         android:layout_marginTop="50dp"
         app:barrage_row_height="@dimen/barrage_row_height"
-        app:barrage_row_space="@dimen/barrage_row_space"
-        android:background="@color/accent"/>
+        app:barrage_row_space="@dimen/barrage_row_space" />
 
     <com.android.jtknife.widgets.barrage.KittyBarrageView
         android:id="@+id/kitty_barrageview"
         android:layout_width="match_parent"
-        android:layout_height="200dp"
+        android:layout_height="180dp"
         android:layout_alignParentBottom="true"
         android:layout_marginBottom="100dp"
-        android:background="@color/light_gray"/>
+        android:background="@color/light_gray" />
 
     <com.android.jtknife.modules.live.gift.GiftAnimationView
         android:id="@+id/gift_anim_view"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"/>
+        android:layout_height="match_parent" />
 
     <TextView
         android:layout_width="match_parent"
@@ -73,4 +72,12 @@
             android:layout_width="match_parent"
             android:layout_height="0dp" />
     </com.android.jtknife.modules.live.RoomEditChatView>
+
+    <View
+        android:id="@+id/mask_view"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_above="@+id/bottom_input_layout"
+        android:background="#40000000"
+        android:visibility="gone" />
 </RelativeLayout>
