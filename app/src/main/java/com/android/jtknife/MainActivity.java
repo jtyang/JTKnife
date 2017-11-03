@@ -12,6 +12,7 @@ import com.android.jtknife.model.UserModel;
 import com.android.jtknife.model.entity.UserInfo;
 import com.android.jtknife.modules.banner.BannerActivityV2;
 import com.android.jtknife.modules.feature.FeatureSampleActivity;
+import com.android.jtknife.modules.gradient.TextGradientActivity;
 import com.android.jtknife.modules.live.WatchActivity;
 import com.android.jtknife.modules.rxjava.RxJavaDemoActivity;
 import com.android.jtknife.modules.stackblur.StackBlurActivity;
@@ -35,6 +36,8 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
     Button bannerBtn;
     @Bind(R.id.rxjava_btn)
     Button rxjavaBtn;
+    @Bind(R.id.text_gradient_btn)
+    Button textGradientBtn;
 
     @InjectBean
     UserModel userModel;//InjectBean只能注解对象的实现无参数的构造函数
@@ -60,6 +63,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
         stackBlurButton.setOnClickListener(this);
         bannerBtn.setOnClickListener(this);
         rxjavaBtn.setOnClickListener(this);
+        textGradientBtn.setOnClickListener(this);
     }
 
     private void startService() {
@@ -88,6 +92,9 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
                 break;
             case R.id.rxjava_btn:
                 startActivity(new Intent(mContext, RxJavaDemoActivity.class));
+                break;
+            case R.id.text_gradient_btn:
+                startActivity(new Intent(mContext, TextGradientActivity.class));
                 break;
             default:
                 break;

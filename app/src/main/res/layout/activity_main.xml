@@ -51,4 +51,11 @@
         android:text="rxjava"
         android:textAllCaps="false" />
 
+    <Button
+        android:id="@+id/text_gradient_btn"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:text="Text Gradient"
+        android:textAllCaps="false" />
+
 </LinearLayout>
