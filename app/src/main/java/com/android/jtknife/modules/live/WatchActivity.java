@@ -57,7 +57,7 @@ public class WatchActivity extends BaseActivity {
 
     @Override
     protected void onInitView() {
-        roomEditChatView.setActivity(this);
+//        roomEditChatView.setActivity(this);
         roomEditChatView.setMaskView(maskView);
         inputSayTextView.setOnClickListener(new View.OnClickListener() {
             @Override

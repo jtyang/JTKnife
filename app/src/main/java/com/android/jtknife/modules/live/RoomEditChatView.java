@@ -20,7 +20,6 @@ import butterknife.ButterKnife;
 
 /**
  * 直播间聊天view
- * 原理，底部加一个空白view，通过监听键盘高度，设置空白view的高度，撑起聊天输入框
  * AUTHOR: yangjiantong
  * DATE: 2017/2/6
  */
@@ -60,8 +59,8 @@ public class RoomEditChatView extends LinearLayout {
     @Override
     protected void onSizeChanged(int w, int h, int oldw, int oldh) {
         super.onSizeChanged(w, h, oldw, oldh);
-        if (this.activity != null) {
-            this.keyboardHeight = getKeyboardHeight(activity);
+        if (getContext() != null) {
+            this.keyboardHeight = getKeyboardHeight((Activity) getContext());
         }
     }
 
@@ -76,9 +75,9 @@ public class RoomEditChatView extends LinearLayout {
         Rect chatInputRect = new Rect();
         chatInputLayout.getWindowVisibleDisplayFrame(chatInputRect);
         LayoutParams layoutParams;
-        XLog.i("onMeasure=====>>>this.keyboardHeight=" + getKeyboardHeight(activity) + ",height=" + height + ",chatInputLayoutBottom=" + chatInputRect.bottom);
+        XLog.i("onMeasure=====>>>this.keyboardHeight=" + getKeyboardHeight((Activity) getContext()) + ",height=" + height + ",chatInputLayoutBottom=" + chatInputRect.bottom);
         if (height > chatInputRect.bottom) {
-            this.keyboardHeight = getKeyboardHeight(activity);
+            this.keyboardHeight = getKeyboardHeight((Activity) getContext());
             layoutParams = (LayoutParams) bottomSpaceView.getLayoutParams();
             if (layoutParams.height != this.keyboardHeight) {
                 layoutParams.height = this.keyboardHeight;
@@ -87,7 +86,7 @@ public class RoomEditChatView extends LinearLayout {
                 this.isKeyboardShow = true;
             }
         } else if (height < chatInputRect.bottom && this.isKeyboardShow) {
-            int newKeyboardHeight = getKeyboardHeight(activity);
+            int newKeyboardHeight = getKeyboardHeight((Activity) getContext());
             if (newKeyboardHeight == this.keyboardHeight || newKeyboardHeight == dp2px(DEFAULT_KEYBOARD_HEIGHT)) {
                 layoutParams = (LayoutParams) bottomSpaceView.getLayoutParams();
                 layoutParams.height = 0;
@@ -99,7 +98,7 @@ public class RoomEditChatView extends LinearLayout {
                 if (layoutParams2.height != newKeyboardHeight) {
                     layoutParams2.height = newKeyboardHeight;
                     bottomSpaceView.setLayoutParams(layoutParams2);
-//                    this.chatInputLayout.setVisibility(View.VISIBLE);
+                    //this.chatInputLayout.setVisibility(View.VISIBLE);
                 }
             }
         }
@@ -137,13 +136,13 @@ public class RoomEditChatView extends LinearLayout {
         return this.isKeyboardShow;
     }
 
-    private Activity activity;
+//    private Activity activity;
+//
+//    public void setActivity(Activity activity) {
+//        this.activity = activity;
+//    }
 
-    public void setActivity(Activity activity) {
-        this.activity = activity;
-    }
-
-    private View maskView;
+    private View maskView;//蒙层view，用于辅助点击输入区域外面隐藏输入法
 
     public void setMaskView(View view) {
         this.maskView = view;
