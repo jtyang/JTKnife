@@ -4,7 +4,6 @@ import android.graphics.drawable.Drawable;
 import android.graphics.drawable.LayerDrawable;
 import android.view.View;
 
-import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -21,11 +20,11 @@ public class LayerGradient {
     public LayerGradient(List<RevelyGradient> gradients) {
         this.gradients = gradients;
         if (gradients != null) {
-            List<Drawable> list = new ArrayList();
-            for (RevelyGradient gradient : gradients) {
-                list.add(gradient.gradient);
+            Drawable[] drawables = new Drawable[gradients.size()];
+            for (int i = 0; i < gradients.size(); i++) {
+                drawables[i] = gradients.get(i).gradient;
             }
-            drawable = new LayerDrawable((Drawable[]) list.toArray());
+            drawable = new LayerDrawable(drawables);
         }
     }
 

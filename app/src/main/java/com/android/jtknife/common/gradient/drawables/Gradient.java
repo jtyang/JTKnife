@@ -28,6 +28,7 @@ public class Gradient extends Drawable {
     private Shader.TileMode tileMode = Shader.TileMode.CLAMP;
     private float radius = 0.0f;
     private int gradientAlpha = 255;
+    private String[] colorStr;
 
 //    public Gradient(Type type, int[] colors, float[] offsets, float angle, Shader.TileMode tileMode, float radius, int gradientAlpha) {
 //        this.type = type;
@@ -42,6 +43,11 @@ public class Gradient extends Drawable {
     public Gradient(Type type, float radius) {
         this.type = type;
         this.radius = radius;
+    }
+
+    public Gradient(float angle, String[] colorStr) {
+        this.angle = angle;
+        this.colorStr = colorStr;
     }
 
     public enum Type {
@@ -61,6 +67,10 @@ public class Gradient extends Drawable {
     public void setClolors(int[] colors) {
         this.colors = colors;
         rebuild();
+    }
+
+    public String[] getColorStr() {
+        return colorStr;
     }
 
     //    var colors: IntArray = colors
@@ -83,6 +93,10 @@ public class Gradient extends Drawable {
     public void setAngle(float angle) {
         this.angle = angle;
         rebuild();
+    }
+
+    public float getAngle() {
+        return this.angle;
     }
 
     //    var angle: Float = angle

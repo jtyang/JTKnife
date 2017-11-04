@@ -126,7 +126,7 @@ public class RevelyGradient {
         return this;
     }
 
-    private RevelyGradient scale(float x, float y) {
+    public RevelyGradient scale(float x, float y) {
         gradient.scale(x, y);
         return this;
     }

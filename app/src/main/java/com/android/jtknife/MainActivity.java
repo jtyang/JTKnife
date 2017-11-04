@@ -12,7 +12,7 @@ import com.android.jtknife.model.UserModel;
 import com.android.jtknife.model.entity.UserInfo;
 import com.android.jtknife.modules.banner.BannerActivityV2;
 import com.android.jtknife.modules.feature.FeatureSampleActivity;
-import com.android.jtknife.modules.gradient.TextGradientActivity;
+import com.android.jtknife.modules.gradient.BackgroundGradientActivity;
 import com.android.jtknife.modules.live.WatchActivity;
 import com.android.jtknife.modules.rxjava.RxJavaDemoActivity;
 import com.android.jtknife.modules.stackblur.StackBlurActivity;
@@ -94,7 +94,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
                 startActivity(new Intent(mContext, RxJavaDemoActivity.class));
                 break;
             case R.id.text_gradient_btn:
-                startActivity(new Intent(mContext, TextGradientActivity.class));
+                startActivity(new Intent(mContext, BackgroundGradientActivity.class));
                 break;
             default:
                 break;

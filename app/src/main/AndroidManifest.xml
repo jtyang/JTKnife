@@ -84,9 +84,22 @@
             android:windowSoftInputMode="stateAlwaysHidden|adjustResize" />
         <activity
             android:name=".modules.gradient.TextGradientActivity"
-            android:launchMode="singleTask"
-            android:screenOrientation="portrait"
-            android:windowSoftInputMode="stateAlwaysHidden|adjustResize" />
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".modules.gradient.AnimatedGradientActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".modules.gradient.JavaGradientActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".modules.gradient.OtherGradientActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".modules.gradient.LayerGradientActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".modules.gradient.BackgroundGradientActivity"
+            android:screenOrientation="portrait" />
 
         <service android:name=".modules.topactivity.JTService" />
     </application>
