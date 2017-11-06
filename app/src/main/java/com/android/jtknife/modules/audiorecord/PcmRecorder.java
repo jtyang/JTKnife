@@ -27,12 +27,17 @@ public class PcmRecorder {
 
     RecordThread mRecordThread;
 
-    public PcmRecorder(int sampleRate, int channelCnt, String filePath) {
-        int channelConfig = channelCnt == 1 ? AudioFormat.CHANNEL_CONFIGURATION_MONO : AudioFormat.CHANNEL_CONFIGURATION_STEREO;
+    public PcmRecorder(int sampleRate, int channelCount, String filePath) {
+        int channelConfig = channelCount == 1 ? AudioFormat.CHANNEL_CONFIGURATION_MONO : AudioFormat.CHANNEL_CONFIGURATION_STEREO;
         int minBufSize = AudioRecord.getMinBufferSize(sampleRate, channelConfig, AUDIO_FORMAT);
-        mBufSize = sampleRate * 20 / 1000 * channelCnt * AUDIO_FORMAT_IN_BYTE;
+        //20ms数据大小 = 20 * ((sampleRate/1000) * channelCount * AUDIO_FORMAT_IN_BYTE)
+        //但是由于采样率为44100时除以1000会有小数，所以公式一般会优化为 (20 * sampleRate * channelCount * AUDIO_FORMAT_IN_BYTE) / 1000
+        //解释：假设采样率为16000，则1ms会采集16000/1000=16次；channelCnt是声道数，单声道1，双声道2；
+        //AUDIO_FORMAT_IN_BYTE是根据AUDIO_FORMAT知道的，16BIT指的是使用2个字节来表示一个量化点，8BIT指的是使用一个字节来表示
+        //mBufSize = sampleRate * 20 / 1000 * channelCount * AUDIO_FORMAT_IN_BYTE;
+        mBufSize = (20 * sampleRate * channelCount * AUDIO_FORMAT_IN_BYTE) / 1000;
         mAudioRecord = new AudioRecord(MediaRecorder.AudioSource.MIC, sampleRate, channelConfig, AUDIO_FORMAT, 8 * minBufSize);
-        mWavWriter = new WavWriter(filePath, channelCnt, sampleRate, AUDIO_FORMAT);
+        mWavWriter = new WavWriter(filePath, channelCount, sampleRate, AUDIO_FORMAT);
         Log.e(TAG, "state: " + mAudioRecord.getState());
     }
 
