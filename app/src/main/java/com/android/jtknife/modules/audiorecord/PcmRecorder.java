@@ -6,9 +6,16 @@ import android.media.MediaRecorder;
 import android.os.Process;
 import android.util.Log;
 
+import com.android.jtknife.modules.audiorecord.wav.WavFileWriter;
+
+import java.io.IOException;
+
 /**
  * 文件描述
  * ref:http://www.jianshu.com/p/556700f0b3fd
+ *
+ * 将WavWriter改为了WavFileWriter的实现方案，其实两者都是ok的。
+ *
  * AUTHOR: yangjiantong
  * DATE: 2017/11/6
  */
@@ -19,13 +26,15 @@ public class PcmRecorder {
     public static final int AUDIO_FORMAT = AudioFormat.ENCODING_PCM_16BIT;
     public static final int AUDIO_FORMAT_IN_BYTE = 2;
 
-    WavWriter mWavWriter;
+    //    WavWriter mWavWriter;//这种方式也是没问题的，只是尝试下使用WavFileWriter来写文件
     AudioRecord mAudioRecord;
     boolean mStopFlag = false;
     int mBufSize;
     int mCurAmplitude = 0;
 
     RecordThread mRecordThread;
+
+    WavFileWriter wavFileWriter;
 
     public PcmRecorder(int sampleRate, int channelCount, String filePath) {
         int channelConfig = channelCount == 1 ? AudioFormat.CHANNEL_CONFIGURATION_MONO : AudioFormat.CHANNEL_CONFIGURATION_STEREO;
@@ -37,7 +46,13 @@ public class PcmRecorder {
         //mBufSize = sampleRate * 20 / 1000 * channelCount * AUDIO_FORMAT_IN_BYTE;
         mBufSize = (20 * sampleRate * channelCount * AUDIO_FORMAT_IN_BYTE) / 1000;
         mAudioRecord = new AudioRecord(MediaRecorder.AudioSource.MIC, sampleRate, channelConfig, AUDIO_FORMAT, 8 * minBufSize);
-        mWavWriter = new WavWriter(filePath, channelCount, sampleRate, AUDIO_FORMAT);
+//        mWavWriter = new WavWriter(filePath, channelCount, sampleRate, AUDIO_FORMAT);
+        wavFileWriter = new WavFileWriter();
+        try {
+            wavFileWriter.openFile(filePath, sampleRate, channelCount, 16);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
         Log.e(TAG, "state: " + mAudioRecord.getState());
     }
 
@@ -76,10 +91,16 @@ public class PcmRecorder {
             mAudioRecord.startRecording();
             while (!mStopFlag) {
                 int len = mAudioRecord.read(buffer, 0, buffer.length);
-                mWavWriter.writeToFile(buffer, len);
-                setCurAmplitude(buffer, len);
+//                mWavWriter.writeToFile(buffer, len);
+//                setCurAmplitude(buffer, len);
+                wavFileWriter.writeData(buffer, 0, len);
             }
-            mWavWriter.closeFile();
+//            mWavWriter.closeFile();
+            try {
+                wavFileWriter.closeFile();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
             mAudioRecord.stop();
             mAudioRecord.release();
             Log.d(TAG, "thread end");
