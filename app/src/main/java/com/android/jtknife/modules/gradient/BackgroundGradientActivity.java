@@ -47,6 +47,7 @@ public class BackgroundGradientActivity extends BaseActivity {
 
     @Override
     protected void onInitView() {
+        GRADIENT_DATAS.clear();
         GRADIENT_DATAS.add(new Gradient(0f, new String[]{"#17EA19", "#6078EA"}));
         GRADIENT_DATAS.add(new Gradient(-19f, new String[]{"#21D4FD", "#B721FF"}));
         GRADIENT_DATAS.add(new Gradient(90f, new String[]{"#FEE140", "#FA709A"}));
