@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="8dp"
+        android:layout_marginTop="8dp">
+
+        <Button
+            android:id="@+id/btn_record_trigger"
+            android:layout_width="200dp"
+            android:layout_height="48dp"
+            android:layout_centerHorizontal="true"
+            android:text="Start Record"
+            android:textAllCaps="false" />
+
+        <ProgressBar
+            android:id="@+id/pb_voice_ampli"
+            style="@style/Widget.AppCompat.ProgressBar.Horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/btn_record_trigger"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="16dp"
+            android:layout_marginRight="16dp"
+            android:layout_marginTop="15dp" />
+    </RelativeLayout>
+
+    <Button
+        android:id="@+id/player_btn"
+        android:layout_width="200dp"
+        android:layout_height="48dp"
+        android:layout_gravity="center_horizontal"
+        android:textAllCaps="false"
+        android:text="Play Wav"/>
+
+</LinearLayout>

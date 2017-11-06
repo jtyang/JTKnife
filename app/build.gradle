@@ -38,4 +38,5 @@ dependencies {
     compile 'com.github.yalantis:ucrop:2.2.1' //compile 'com.github.yalantis:ucrop:2.2.1-native'
 
     compile 'com.liulishuo.filedownloader:library:1.4.1'
+    compile 'com.yanzhenjie:permission:1.1.2'
 }

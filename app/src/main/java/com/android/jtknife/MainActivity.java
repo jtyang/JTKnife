@@ -10,6 +10,7 @@ import com.android.jtknife.core.common.di.InjectBean;
 import com.android.jtknife.core.views.ConfirmDialog;
 import com.android.jtknife.model.UserModel;
 import com.android.jtknife.model.entity.UserInfo;
+import com.android.jtknife.modules.audiorecord.AudioRecordActivity;
 import com.android.jtknife.modules.banner.BannerActivityV2;
 import com.android.jtknife.modules.feature.FeatureSampleActivity;
 import com.android.jtknife.modules.gradient.BackgroundGradientActivity;
@@ -38,6 +39,8 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
     Button rxjavaBtn;
     @Bind(R.id.text_gradient_btn)
     Button textGradientBtn;
+    @Bind(R.id.audio_record_btn)
+    Button audioRecordBtn;
 
     @InjectBean
     UserModel userModel;//InjectBean只能注解对象的实现无参数的构造函数
@@ -64,6 +67,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
         bannerBtn.setOnClickListener(this);
         rxjavaBtn.setOnClickListener(this);
         textGradientBtn.setOnClickListener(this);
+        audioRecordBtn.setOnClickListener(this);
     }
 
     private void startService() {
@@ -95,6 +99,9 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
                 break;
             case R.id.text_gradient_btn:
                 startActivity(new Intent(mContext, BackgroundGradientActivity.class));
+                break;
+            case R.id.audio_record_btn:
+                startActivity(new Intent(mContext, AudioRecordActivity.class));
                 break;
             default:
                 break;
