@@ -16,6 +16,7 @@ import com.android.jtknife.modules.feature.FeatureSampleActivity;
 import com.android.jtknife.modules.gradient.BackgroundGradientActivity;
 import com.android.jtknife.modules.live.WatchActivity;
 import com.android.jtknife.modules.rxjava.RxJavaDemoActivity;
+import com.android.jtknife.modules.softinput.SoftInputTestActivity;
 import com.android.jtknife.modules.stackblur.StackBlurActivity;
 import com.android.jtknife.modules.testlist.SwipeRefreshRecyclerViewSampleActivity;
 import com.android.jtknife.modules.topactivity.JTService;
@@ -41,6 +42,8 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
     Button textGradientBtn;
     @Bind(R.id.audio_record_btn)
     Button audioRecordBtn;
+    @Bind(R.id.soft_input_btn)
+    Button softInputBtn;
 
     @InjectBean
     UserModel userModel;//InjectBean只能注解对象的实现无参数的构造函数
@@ -68,6 +71,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
         rxjavaBtn.setOnClickListener(this);
         textGradientBtn.setOnClickListener(this);
         audioRecordBtn.setOnClickListener(this);
+        softInputBtn.setOnClickListener(this);
     }
 
     private void startService() {
@@ -102,6 +106,9 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
                 break;
             case R.id.audio_record_btn:
                 startActivity(new Intent(mContext, AudioRecordActivity.class));
+                break;
+            case R.id.soft_input_btn:
+                startActivity(new Intent(mContext, SoftInputTestActivity.class));
                 break;
             default:
                 break;

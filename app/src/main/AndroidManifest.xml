@@ -103,6 +103,9 @@
         <activity
             android:name=".modules.audiorecord.AudioRecordActivity"
             android:screenOrientation="portrait" />
+        <activity
+            android:name=".modules.softinput.SoftInputTestActivity"
+            android:screenOrientation="portrait" />
 
         <service android:name=".modules.topactivity.JTService" />
     </application>

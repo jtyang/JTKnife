@@ -64,5 +64,11 @@
         android:layout_height="50dp"
         android:text="Audio Record"
         android:textAllCaps="false" />
+    <Button
+        android:id="@+id/soft_input_btn"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:text="Soft Input"
+        android:textAllCaps="false" />
 
 </LinearLayout>
