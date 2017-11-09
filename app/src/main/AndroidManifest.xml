@@ -106,6 +106,10 @@
         <activity
             android:name=".modules.softinput.SoftInputTestActivity"
             android:screenOrientation="portrait" />
+        <activity
+            android:name=".modules.softinput.SoftTest2Activity"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="adjustResize"/>
 
         <service android:name=".modules.topactivity.JTService" />
     </application>

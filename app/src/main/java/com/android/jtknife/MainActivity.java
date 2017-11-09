@@ -16,7 +16,7 @@ import com.android.jtknife.modules.feature.FeatureSampleActivity;
 import com.android.jtknife.modules.gradient.BackgroundGradientActivity;
 import com.android.jtknife.modules.live.WatchActivity;
 import com.android.jtknife.modules.rxjava.RxJavaDemoActivity;
-import com.android.jtknife.modules.softinput.SoftInputTestActivity;
+import com.android.jtknife.modules.softinput.SoftTest2Activity;
 import com.android.jtknife.modules.stackblur.StackBlurActivity;
 import com.android.jtknife.modules.testlist.SwipeRefreshRecyclerViewSampleActivity;
 import com.android.jtknife.modules.topactivity.JTService;
@@ -108,7 +108,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
                 startActivity(new Intent(mContext, AudioRecordActivity.class));
                 break;
             case R.id.soft_input_btn:
-                startActivity(new Intent(mContext, SoftInputTestActivity.class));
+                startActivity(new Intent(mContext, SoftTest2Activity.class));
                 break;
             default:
                 break;
