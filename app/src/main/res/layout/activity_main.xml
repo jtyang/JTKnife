@@ -70,5 +70,11 @@
         android:layout_height="50dp"
         android:text="Soft Input"
         android:textAllCaps="false" />
+    <Button
+        android:id="@+id/camera_btn"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:text="Camera"
+        android:textAllCaps="false" />
 
 </LinearLayout>
