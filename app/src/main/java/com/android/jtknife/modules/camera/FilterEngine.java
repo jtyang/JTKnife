@@ -41,6 +41,7 @@ public class FilterEngine {
         fragmentShader = loadShader(GLES20.GL_FRAGMENT_SHADER, GLUtils.readShaderFromResource(mContext, R.raw.base_fragment_shader));
         mShaderProgram = linkProgram(vertexShader, fragmentShader);
 
+        //获取Shader中定义的变量在program中的位置
         aPositionLocation = GLES20.glGetAttribLocation(mShaderProgram, FilterEngine.POSITION_ATTRIBUTE);
         aTextureCoordLocation = GLES20.glGetAttribLocation(mShaderProgram, FilterEngine.TEXTURE_COORD_ATTRIBUTE);
         uTextureMatrixLocation = GLES20.glGetUniformLocation(mShaderProgram, FilterEngine.TEXTURE_MATRIX_UNIFORM);
@@ -57,7 +58,7 @@ public class FilterEngine {
         }
         return filterEngine;
     }*/
-
+    //每行前两个值为顶点坐标，后两个为纹理坐标
     private static final float[] vertexData = {
             1f, 1f, 1f, 1f,
             -1f, 1f, 0f, 1f,
@@ -106,19 +107,29 @@ public class FilterEngine {
     public void drawTexture(float[] transformMatrix) {
 
         GLES20.glActiveTexture(GLES11Ext.GL_TEXTURE_EXTERNAL_OES);
+        //绑定外部纹理到纹理单元0
         GLES20.glBindTexture(GLES11Ext.GL_TEXTURE_EXTERNAL_OES, mOESTextureId);
+        //将此纹理单元传给片段着色器的uTextureSampler外部纹理采样器
         GLES20.glUniform1i(uTextureSamplerLocation, 0);
+        //将纹理矩阵传给片段着色器
         GLES20.glUniformMatrix4fv(uTextureMatrixLocation, 1, false, transformMatrix, 0);
 
+        //将顶点和纹理坐标传给顶点着色器
         if (mBuffer != null) {
+            //顶点坐标从位置0开始读取
             mBuffer.position(0);
+            //使能顶点属性
             GLES20.glEnableVertexAttribArray(aPositionLocation);
+            //顶点坐标每次读取两个顶点值，之后间隔16（每行4个值 * 4个字节）的字节继续读取两个顶点值
             GLES20.glVertexAttribPointer(aPositionLocation, 2, GLES20.GL_FLOAT, false, 16, mBuffer);
 
+            //纹理坐标从位置2开始读取
             mBuffer.position(2);
             GLES20.glEnableVertexAttribArray(aTextureCoordLocation);
+            //纹理坐标每次读取两个顶点值，之后间隔16（每行4个值 * 4个字节）的字节继续读取两个顶点值
             GLES20.glVertexAttribPointer(aTextureCoordLocation, 2, GLES20.GL_FLOAT, false, 16, mBuffer);
 
+            //绘制两个三角形（6个顶点）
             GLES20.glDrawArrays(GLES20.GL_TRIANGLES, 0, 6);
         }
     }
