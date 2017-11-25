@@ -40,6 +40,12 @@ public class FilterEngine {
         vertexShader = loadShader(GLES20.GL_VERTEX_SHADER, GLUtils.readShaderFromResource(mContext, R.raw.base_vertex_shader));
         fragmentShader = loadShader(GLES20.GL_FRAGMENT_SHADER, GLUtils.readShaderFromResource(mContext, R.raw.base_fragment_shader));
         mShaderProgram = linkProgram(vertexShader, fragmentShader);
+
+        aPositionLocation = GLES20.glGetAttribLocation(mShaderProgram, FilterEngine.POSITION_ATTRIBUTE);
+        aTextureCoordLocation = GLES20.glGetAttribLocation(mShaderProgram, FilterEngine.TEXTURE_COORD_ATTRIBUTE);
+        uTextureMatrixLocation = GLES20.glGetUniformLocation(mShaderProgram, FilterEngine.TEXTURE_MATRIX_UNIFORM);
+        uTextureSamplerLocation = GLES20.glGetUniformLocation(mShaderProgram, FilterEngine.TEXTURE_SAMPLER_UNIFORM);
+
     }
 
     /*public static FilterEngine getInstance() {
@@ -98,10 +104,6 @@ public class FilterEngine {
     }
 
     public void drawTexture(float[] transformMatrix) {
-        aPositionLocation = GLES20.glGetAttribLocation(mShaderProgram, FilterEngine.POSITION_ATTRIBUTE);
-        aTextureCoordLocation = GLES20.glGetAttribLocation(mShaderProgram, FilterEngine.TEXTURE_COORD_ATTRIBUTE);
-        uTextureMatrixLocation = GLES20.glGetUniformLocation(mShaderProgram, FilterEngine.TEXTURE_MATRIX_UNIFORM);
-        uTextureSamplerLocation = GLES20.glGetUniformLocation(mShaderProgram, FilterEngine.TEXTURE_SAMPLER_UNIFORM);
 
         GLES20.glActiveTexture(GLES11Ext.GL_TEXTURE_EXTERNAL_OES);
         GLES20.glBindTexture(GLES11Ext.GL_TEXTURE_EXTERNAL_OES, mOESTextureId);
