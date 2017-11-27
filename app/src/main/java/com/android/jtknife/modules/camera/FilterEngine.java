@@ -106,7 +106,7 @@ public class FilterEngine {
 
     public void drawTexture(float[] transformMatrix) {
 
-        GLES20.glActiveTexture(GLES11Ext.GL_TEXTURE_EXTERNAL_OES);
+        GLES20.glActiveTexture(GLES20.GL_TEXTURE0);
         //绑定外部纹理到纹理单元0
         GLES20.glBindTexture(GLES11Ext.GL_TEXTURE_EXTERNAL_OES, mOESTextureId);
         //将此纹理单元传给片段着色器的uTextureSampler外部纹理采样器
