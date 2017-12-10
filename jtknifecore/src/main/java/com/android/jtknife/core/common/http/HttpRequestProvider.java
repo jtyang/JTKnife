@@ -7,6 +7,8 @@ import com.android.jtknife.core.common.http.utils.Utills;
 import java.io.IOException;
 import java.net.URI;
 
+import okhttp3.MediaType;
+
 /**
  * 文件描述:
  *
@@ -29,6 +31,10 @@ public class HttpRequestProvider {
 
     public HttpRequest getHttpRequest(URI uri, HttpMethod httpMethod) throws IOException {
         return mHttpRequestFactory.createHttpRequest(uri, httpMethod);
+    }
+
+    public HttpRequest getHttpRequest(URI uri, HttpMethod httpMethod, MediaType mediaType) throws IOException {
+        return mHttpRequestFactory.createHttpRequest(uri, httpMethod, mediaType);
     }
 
     public HttpRequestFactory getHttpRequestFactory() {

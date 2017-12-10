@@ -4,7 +4,6 @@ package com.android.jtknife.core.common.http.service;
 import com.android.jtknife.core.common.http.model.HttpRequest;
 import com.android.jtknife.core.common.http.model.HttpResponse;
 
-import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 
 /**
@@ -25,7 +24,6 @@ public class HttpRunnable implements Runnable {
         this.mHttpRequest = httpRequest;
         this.mRequest = request;
         this.mWorkStation = workStation;
-
     }
 
     @Override
@@ -40,30 +38,19 @@ public class HttpRunnable implements Runnable {
             mRequest.setContentType(contentType);
             if (response.getStatus().isSuccess()) {
                 if (mRequest.getResponse() != null) {
-                    mRequest.getResponse().success(mRequest, new String(getData(response)));
+//                    mRequest.getResponse().success(mRequest, new String(getData(response)));
+                    mRequest.getResponse().onSuccess(mRequest, response);
                 }
-
             }
         } catch (IOException e) {
             e.printStackTrace();
+            if (mRequest.getResponse() != null) {
+                mRequest.getResponse().onError(-1, "IOException");
+            }
         } finally {
             mWorkStation.finish(mRequest);
         }
 
-
     }
 
-    public byte[] getData(HttpResponse response) {
-        ByteArrayOutputStream outputStream = new ByteArrayOutputStream((int) response.getContentLength());
-        int len;
-        byte[] data = new byte[512];
-        try {
-            while ((len = response.getBody().read(data)) != -1) {
-                outputStream.write(data, 0, len);
-            }
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        return outputStream.toByteArray();
-    }
 }

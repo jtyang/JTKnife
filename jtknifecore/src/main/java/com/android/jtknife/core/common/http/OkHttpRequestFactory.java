@@ -4,9 +4,11 @@ import com.android.jtknife.core.common.http.model.HttpMethod;
 import com.android.jtknife.core.common.http.model.HttpRequest;
 import com.android.jtknife.core.common.http.request.OkHttpRequest;
 
+import java.io.IOException;
 import java.net.URI;
 import java.util.concurrent.TimeUnit;
 
+import okhttp3.MediaType;
 import okhttp3.OkHttpClient;
 
 /**
@@ -48,6 +50,11 @@ public class OkHttpRequestFactory implements HttpRequestFactory {
     @Override
     public HttpRequest createHttpRequest(URI uri, HttpMethod method) {
         return new OkHttpRequest(mClient, method, uri.toString());
+    }
+
+    @Override
+    public HttpRequest createHttpRequest(URI uri, HttpMethod method, MediaType mediaType) throws IOException {
+        return new OkHttpRequest(mClient, method, uri.toString(), mediaType);
     }
 }
 

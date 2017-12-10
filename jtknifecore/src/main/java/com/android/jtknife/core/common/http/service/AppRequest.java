@@ -1,7 +1,13 @@
 package com.android.jtknife.core.common.http.service;
 
 
+import android.text.TextUtils;
+
 import com.android.jtknife.core.common.http.model.HttpMethod;
+
+import java.io.UnsupportedEncodingException;
+import java.net.URLEncoder;
+import java.util.Map;
 
 /**
  * 文件描述:
@@ -10,6 +16,8 @@ import com.android.jtknife.core.common.http.model.HttpMethod;
  * @date 2017/12/10
  */
 public class AppRequest {
+
+    private static final String ENCODING = "utf-8";
 
     private String mUrl;
 
@@ -33,16 +41,51 @@ public class AppRequest {
         return mMethod;
     }
 
-    public void setMethod(HttpMethod method) {
+    public AppRequest setMethod(HttpMethod method) {
         mMethod = method;
+        return this;
     }
 
     public byte[] getData() {
         return mData;
     }
 
-    public void setData(byte[] data) {
+    public AppRequest setData(byte[] data) {
         mData = data;
+        return this;
+    }
+
+    public AppRequest setData(Map<String, String> values) {
+        setData(encodeParam(values));
+        return this;
+    }
+
+    public AppRequest setData(String content) {
+        if (!TextUtils.isDigitsOnly(content)) {
+            setData(content.getBytes());
+        }
+        return this;
+    }
+
+    private byte[] encodeParam(Map<String, String> value) {
+        if (value == null || value.size() == 0) {
+            return null;
+        }
+        StringBuilder buffer = new StringBuilder();
+        int count = 0;
+        try {
+            for (Map.Entry<String, String> entry : value.entrySet()) {
+                buffer.append(URLEncoder.encode(entry.getKey(), ENCODING)).append("=").
+                        append(URLEncoder.encode(entry.getValue(), ENCODING));
+                if (count != value.size() - 1) {
+                    buffer.append("&");
+                }
+                count++;
+            }
+        } catch (UnsupportedEncodingException e) {
+            e.printStackTrace();
+        }
+        return buffer.toString().getBytes();
     }
 
     public AppResponse getResponse() {

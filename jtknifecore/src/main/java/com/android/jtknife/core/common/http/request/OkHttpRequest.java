@@ -22,7 +22,7 @@ import okhttp3.Response;
 
 /**
  * 文件描述:
- * get post-form post-json  upload-file download-file
+ * get post-form post-json  upload-file/image download-file/image
  *
  * @author yangjiantong
  * @date 2017/12/10
@@ -36,7 +36,7 @@ public class OkHttpRequest extends AbstractHttpRequest {
     private String mUrl;
     private Object mTag;
 
-    protected MediaType mediaType;        //上传的MIME类型
+    protected MediaType mMediaType;       //上传的MIME类型
     protected String content;             //上传的文本内容
     protected byte[] bs;                  //上传的字节数据
     protected File file;                  //单纯的上传一个文件
@@ -51,12 +51,22 @@ public class OkHttpRequest extends AbstractHttpRequest {
         this.mUrl = url;
     }
 
+    public OkHttpRequest(OkHttpClient client, HttpMethod method, String url, MediaType mediaType) {
+        this.mClient = client;
+        this.mMethod = method;
+        this.mUrl = url;
+        this.mMediaType = mediaType;
+    }
+
     @Override
     protected HttpResponse executeInternal(HttpHeader header, byte[] data) throws IOException {
         boolean isBody = mMethod == HttpMethod.POST;
         RequestBody requestBody = null;
         if (isBody) {
-            requestBody = RequestBody.create(MediaType.parse("application/x-www-form-urlencoded"), data);
+            if (mMediaType == null) {
+                mMediaType = HttpHeader.MEDIA_TYPE_FORM;
+            }
+            requestBody = RequestBody.create(mMediaType, data);
         }
         Request.Builder builder = new Request.Builder().url(mUrl).method(mMethod.name(), requestBody);
 
@@ -106,12 +116,12 @@ public class OkHttpRequest extends AbstractHttpRequest {
         if (getMethod().hasBody()) {
 //            if (isSpliceUrl) url = HttpUtils.createUrlFromParams(baseUrl, params.urlParamsMap);
 //            if (requestBody != null) return requestBody;        //自定义的请求体
-            if (content != null && mediaType != null)
-                return RequestBody.create(mediaType, content);    //上传字符串数据
-            if (bs != null && mediaType != null)
-                return RequestBody.create(mediaType, bs);         //上传字节数组
-            if (file != null && mediaType != null)
-                return RequestBody.create(mediaType, file);       //上传一个文件
+            if (content != null && mMediaType != null)
+                return RequestBody.create(mMediaType, content);    //上传字符串数据
+            if (bs != null && mMediaType != null)
+                return RequestBody.create(mMediaType, bs);         //上传字节数组
+            if (file != null && mMediaType != null)
+                return RequestBody.create(mMediaType, file);       //上传一个文件
             return HttpUtils.generateMultipartRequestBody(mParams, isMultipart);
         }
         return null;
@@ -136,7 +146,7 @@ public class OkHttpRequest extends AbstractHttpRequest {
     @SuppressWarnings("unchecked")
     public OkHttpRequest upString(String string) {
         this.content = string;
-        this.mediaType = HttpParams.MEDIA_TYPE_PLAIN;
+        this.mMediaType = HttpParams.MEDIA_TYPE_PLAIN;
         return this;
     }
 
@@ -147,7 +157,7 @@ public class OkHttpRequest extends AbstractHttpRequest {
     @SuppressWarnings("unchecked")
     public OkHttpRequest upString(String string, MediaType mediaType) {
         this.content = string;
-        this.mediaType = mediaType;
+        this.mMediaType = mMediaType;
         return this;
     }
 
@@ -157,7 +167,7 @@ public class OkHttpRequest extends AbstractHttpRequest {
     @SuppressWarnings("unchecked")
     public OkHttpRequest upJson(String json) {
         this.content = json;
-        this.mediaType = HttpParams.MEDIA_TYPE_JSON;
+        this.mMediaType = HttpParams.MEDIA_TYPE_JSON;
         return this;
     }
 
@@ -167,7 +177,7 @@ public class OkHttpRequest extends AbstractHttpRequest {
     @SuppressWarnings("unchecked")
     public OkHttpRequest upJson(JSONObject jsonObject) {
         this.content = jsonObject.toString();
-        this.mediaType = HttpParams.MEDIA_TYPE_JSON;
+        this.mMediaType = HttpParams.MEDIA_TYPE_JSON;
         return this;
     }
 
@@ -177,7 +187,7 @@ public class OkHttpRequest extends AbstractHttpRequest {
     @SuppressWarnings("unchecked")
     public OkHttpRequest upJson(JSONArray jsonArray) {
         this.content = jsonArray.toString();
-        this.mediaType = HttpParams.MEDIA_TYPE_JSON;
+        this.mMediaType = HttpParams.MEDIA_TYPE_JSON;
         return this;
     }
 
@@ -187,7 +197,7 @@ public class OkHttpRequest extends AbstractHttpRequest {
     @SuppressWarnings("unchecked")
     public OkHttpRequest upBytes(byte[] bs) {
         this.bs = bs;
-        this.mediaType = HttpParams.MEDIA_TYPE_STREAM;
+        this.mMediaType = HttpParams.MEDIA_TYPE_STREAM;
         return this;
     }
 
@@ -197,7 +207,7 @@ public class OkHttpRequest extends AbstractHttpRequest {
     @SuppressWarnings("unchecked")
     public OkHttpRequest upBytes(byte[] bs, MediaType mediaType) {
         this.bs = bs;
-        this.mediaType = mediaType;
+        this.mMediaType = mMediaType;
         return this;
     }
 
@@ -207,7 +217,7 @@ public class OkHttpRequest extends AbstractHttpRequest {
     @SuppressWarnings("unchecked")
     public OkHttpRequest upFile(File file) {
         this.file = file;
-        this.mediaType = HttpUtils.guessMimeType(file.getName());
+        this.mMediaType = HttpUtils.guessMimeType(file.getName());
         return this;
     }
 
@@ -217,7 +227,7 @@ public class OkHttpRequest extends AbstractHttpRequest {
     @SuppressWarnings("unchecked")
     public OkHttpRequest upFile(File file, MediaType mediaType) {
         this.file = file;
-        this.mediaType = mediaType;
+        this.mMediaType = mediaType;
         return this;
     }
 

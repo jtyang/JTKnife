@@ -8,6 +8,8 @@ import java.util.Locale;
 import java.util.Map;
 import java.util.Set;
 
+import okhttp3.MediaType;
+
 /**
  * 文件描述:
  *
@@ -15,6 +17,12 @@ import java.util.Set;
  * @date 2017/12/10
  */
 public class HttpHeader {
+
+    public static final MediaType MEDIA_TYPE_PLAIN = MediaType.parse("text/plain;charset=utf-8");
+    public static final MediaType MEDIA_TYPE_JSON = MediaType.parse("application/json;charset=utf-8");
+    public static final MediaType MEDIA_TYPE_FORM = MediaType.parse("application/x-www-form-urlencoded");
+    public static final MediaType MEDIA_TYPE_STREAM = MediaType.parse("application/octet-stream");
+
 
     public final static String ACCEPT = "Accept";
     public final static String PRAGMA = "Pragma";
