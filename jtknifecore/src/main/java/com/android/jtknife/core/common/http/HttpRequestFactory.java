@@ -6,8 +6,6 @@ import com.android.jtknife.core.common.http.model.HttpRequest;
 import java.io.IOException;
 import java.net.URI;
 
-import okhttp3.MediaType;
-
 /**
  * 文件描述:
  *
@@ -16,7 +14,5 @@ import okhttp3.MediaType;
  */
 public interface HttpRequestFactory {
 
-    HttpRequest createHttpRequest(URI uri, HttpMethod method) throws IOException;
-
-    HttpRequest createHttpRequest(URI uri, HttpMethod method, MediaType mediaType) throws IOException;
+    HttpRequest createHttpRequest(URI uri, HttpMethod method, Object extraObj) throws IOException;
 }

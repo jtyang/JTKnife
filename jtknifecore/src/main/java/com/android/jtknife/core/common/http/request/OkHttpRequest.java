@@ -30,8 +30,8 @@ import okhttp3.Response;
 public class OkHttpRequest extends AbstractHttpRequest {
 
     private OkHttpClient mClient;
-
     private HttpMethod mMethod;
+    private Object extraObj;
 
     private String mUrl;
     private Object mTag;
@@ -45,17 +45,26 @@ public class OkHttpRequest extends AbstractHttpRequest {
     protected boolean isSpliceUrl = false;  //是否拼接url参数
     protected okhttp3.Request mRequest;
 
-    public OkHttpRequest(OkHttpClient client, HttpMethod method, String url) {
+    public OkHttpRequest(OkHttpClient client, HttpMethod method, String url, Object extraObj) {
         this.mClient = client;
         this.mMethod = method;
         this.mUrl = url;
+        this.extraObj = extraObj;
+
+        initMediaType();
     }
 
-    public OkHttpRequest(OkHttpClient client, HttpMethod method, String url, MediaType mediaType) {
-        this.mClient = client;
-        this.mMethod = method;
-        this.mUrl = url;
-        this.mMediaType = mediaType;
+    private void initMediaType() {
+        if (mMethod == HttpMethod.POST) {
+            if (this.extraObj != null && extraObj instanceof String) {
+                String type = (String) extraObj;
+                if ("JSON".equals(type)) {
+                    this.mMediaType = HttpHeader.MEDIA_TYPE_JSON;
+                } else {
+                    this.mMediaType = HttpHeader.MEDIA_TYPE_FORM;
+                }
+            }
+        }
     }
 
     @Override

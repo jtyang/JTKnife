@@ -60,7 +60,7 @@ public class WorkStation {
     public void doHttpRequest(AppRequest request) {
         HttpRequest httpRequest = null;
         try {
-            httpRequest = mRequestProvider.getHttpRequest(URI.create(request.getUrl()), request.getMethod());
+            httpRequest = mRequestProvider.getHttpRequest(URI.create(request.getUrl()), request.getMethod(), request.getExtraObj());
         } catch (IOException e) {
             e.printStackTrace();
         }

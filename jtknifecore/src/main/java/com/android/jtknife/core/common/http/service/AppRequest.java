@@ -25,6 +25,8 @@ public class AppRequest {
 
     private byte[] mData;
 
+    private Object extraObj;
+
     private AppResponse mResponse;
 
     private String mContentType;
@@ -65,6 +67,14 @@ public class AppRequest {
             setData(content.getBytes());
         }
         return this;
+    }
+
+    public void setExtraObj(Object o){
+        this.extraObj = o;
+    }
+
+    public Object getExtraObj(){
+        return extraObj;
     }
 
     private byte[] encodeParam(Map<String, String> value) {
