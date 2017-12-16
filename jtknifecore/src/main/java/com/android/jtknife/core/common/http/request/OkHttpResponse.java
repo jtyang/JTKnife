@@ -49,7 +49,7 @@ public class OkHttpResponse extends AbstractHttpResponse {
     }
 
     @Override
-    public HttpHeader getHeader() {
+    public HttpHeader getHeaders() {
         if (mHeaders == null) {
             mHeaders = new HttpHeader();
         }
