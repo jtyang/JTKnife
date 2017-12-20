@@ -9,7 +9,7 @@ import android.view.View;
 import com.elvishew.xlog.XLog;
 
 /**
- * 文件描述:
+ * 文件描述:BaseDelegate for Activity
  *
  * UseAge:
  *
@@ -18,10 +18,7 @@ import com.elvishew.xlog.XLog;
  * XxActivity:
  * onCreate
  * TestDelegate testDelegate = new TestDelegate();
- * getLifecycle().addObserver(testDelegate);
- *
- * onDestroy:
- * getLifecycle().removeObserver(testDelegate);
+ * registerDelegate(testDelegate);//delegate will auto unregister on the Activity onDestroy
  *
  * @author yangjiantong
  * @date 2017/12/20

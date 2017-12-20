@@ -16,7 +16,6 @@ public class FeatureSampleActivity extends BaseActivity {
 
     TestDelegate testDelegate;
 
-//    FeatureHostManager featureSampleHost;
 //    DispatchQueue dispatchQueue = new DispatchQueue("aaa");
 //    DispatchQueue dispatchQueue2 = new DispatchQueue("bbb");
 //    DispatchQueue dispatchQueue3 = new DispatchQueue("ccc");
@@ -25,10 +24,6 @@ public class FeatureSampleActivity extends BaseActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-//        featureSampleHost = new FeatureHostManager(mContext);
-//        featureSampleHost.with(new Feature1())
-//                .with(new Feature2())
-//                .dispatchOnCreate(rootView, savedInstanceState);
 //        dispatchQueue.postRunnable(new Runnable() {
 //            @Override
 //            public void run() {
@@ -55,8 +50,8 @@ public class FeatureSampleActivity extends BaseActivity {
 //            }
 //        });
 
-        testDelegate = new TestDelegate(this,rootView);
-//        getLifecycle().addObserver(testDelegate);
+        testDelegate = new TestDelegate(this, rootView);
+        registerDelegate(testDelegate);
     }
 
     @Override
@@ -73,7 +68,6 @@ public class FeatureSampleActivity extends BaseActivity {
     protected void onResume() {
         super.onResume();
         XLog.e("FeatureActivity onResume");
-        getLifecycle().addObserver(testDelegate);
     }
 
     @Override
@@ -82,6 +76,5 @@ public class FeatureSampleActivity extends BaseActivity {
         XLog.e("FeatureActivity onDestroy 1");
         super.onDestroy();
         XLog.e("FeatureActivity onDestroy 2");
-        getLifecycle().removeObserver(testDelegate);
     }
 }
