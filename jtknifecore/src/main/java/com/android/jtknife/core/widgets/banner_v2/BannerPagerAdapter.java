@@ -23,7 +23,7 @@ public class BannerPagerAdapter<T> extends PagerAdapter {
     private ViewPager mViewPager;
     private boolean canLoop;
     private BannerLayout.BannerPageClickListener mPageClickListener;
-    private final int mLooperCountFactor = 2 * 3 * 4 * 5 * 6;
+    private final int mLooperCountFactor = 2 * 5 * 6 * 7 * 8 * 9;//保证能被2,3,4,5,6,7,8,9,10整除，但5x6x7x8x9已经能保证也被2,3,4整除，乘2是由于开始居中显示
 
     public BannerPagerAdapter(List<T> datas, BannerHolderCreator bannerHolderCreator, boolean canLoop) {
         if (mDatas == null) {
