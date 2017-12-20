@@ -36,7 +36,12 @@ public abstract class BaseDelegate implements LifecycleObserver {
 
     @OnLifecycleEvent(Lifecycle.Event.ON_CREATE)
     public void onCreate() {
-
+        //需要测试如果在activity的onStart执行
+        // void onStart() {
+        //     mRegistry.removeObserver(this);
+        //     mRegistry.add(newObserver);
+        // }
+        //请问：newObserver会依次执行onCreate和onStart吗？还是只是执行onStart？
     }
 
     @OnLifecycleEvent(Lifecycle.Event.ON_DESTROY)
