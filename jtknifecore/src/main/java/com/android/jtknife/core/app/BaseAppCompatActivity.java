@@ -83,11 +83,10 @@ public abstract class BaseAppCompatActivity extends AppCompatActivity {
      */
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onMessageEvent(MessageEvent event) {
-        if (event != null) {
-            handleBusMessage(event);
-            if (isShow) {
-                handleBusMessageIfShow(event);
-            }
+        if (event == null) return;
+        handleBusMessage(event);
+        if (isShow) {
+            handleBusMessageOnActivityShow(event);
         }
     }
 
@@ -96,12 +95,10 @@ public abstract class BaseAppCompatActivity extends AppCompatActivity {
      *
      * @param event
      */
-    public void handleBusMessage(MessageEvent event) {
-
+    protected void handleBusMessage(MessageEvent event) {
     }
 
-    public void handleBusMessageIfShow(MessageEvent event) {
-
+    protected void handleBusMessageOnActivityShow(MessageEvent event) {
     }
 
     //================= delegate ======================
