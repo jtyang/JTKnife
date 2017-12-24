@@ -3,6 +3,8 @@ package com.android.jtknife.core.arch.example2;
 
 import android.arch.lifecycle.LiveData;
 
+import java.util.List;
+
 /**
  * 文件描述:
  *
@@ -11,9 +13,9 @@ import android.arch.lifecycle.LiveData;
  */
 public class Example2Api {
 
-    public LiveData<String> getTestData(){
+    public LiveData<List<String>> getTestData(){
 //        LiveData<String> ld = new MutableLiveData<>();
-        LiveData<String> ld = AbsentLiveData.create();
+        LiveData<List<String>> ld = AbsentLiveData.create();
 
         return ld;
     }
