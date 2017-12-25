@@ -1,6 +1,10 @@
 package com.android.jtknife.modules.feature;
 
+import android.arch.lifecycle.Observer;
+import android.arch.lifecycle.ViewModelProviders;
 import android.os.Bundle;
+import android.os.Handler;
+import android.support.annotation.Nullable;
 import android.view.View;
 
 import com.android.jtknife.R;
@@ -15,6 +19,8 @@ public class FeatureSampleActivity extends BaseActivity {
     View rootView;
 
     TestDelegate testDelegate;
+    UserModelTest umt;
+    Handler mHandler = new Handler();
 
 //    DispatchQueue dispatchQueue = new DispatchQueue("aaa");
 //    DispatchQueue dispatchQueue2 = new DispatchQueue("bbb");
@@ -52,6 +58,21 @@ public class FeatureSampleActivity extends BaseActivity {
 
         testDelegate = new TestDelegate(this, rootView);
         registerDelegate(testDelegate);
+
+        umt = ViewModelProviders.of(this).get(UserModelTest.class);
+        XLog.e("FeatureActivity onCreate livedata "+umt.testLD.getValue());
+        umt.testLD.observe(this, new Observer<String>() {
+            @Override
+            public void onChanged(@Nullable String s) {
+                XLog.e("Feature livedata changed="+s);
+            }
+        });
+        mHandler.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                umt.testLD.setValue("bbbb=====456");
+            }
+        },3000);
     }
 
     @Override

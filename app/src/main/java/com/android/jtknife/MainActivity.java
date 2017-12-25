@@ -1,7 +1,11 @@
 package com.android.jtknife;
 
+import android.arch.lifecycle.Observer;
+import android.arch.lifecycle.ViewModelProviders;
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
+import android.support.annotation.Nullable;
 import android.view.View;
 import android.widget.Button;
 
@@ -14,6 +18,7 @@ import com.android.jtknife.modules.audiorecord.AudioRecordActivity;
 import com.android.jtknife.modules.banner.BannerActivityV2;
 import com.android.jtknife.modules.camera.CameraActivity;
 import com.android.jtknife.modules.feature.FeatureSampleActivity;
+import com.android.jtknife.modules.feature.UserModelTest;
 import com.android.jtknife.modules.gradient.BackgroundGradientActivity;
 import com.android.jtknife.modules.live.WatchActivity;
 import com.android.jtknife.modules.rxjava.RxJavaDemoActivity;
@@ -51,12 +56,29 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
     @InjectBean
     UserModel userModel;//InjectBean只能注解对象的实现无参数的构造函数
 
+    UserModelTest umt;
+    Handler mHandler = new Handler();
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         UserInfo userInfo = userModel.login("ttt", "pwd");
         XLog.i("MainActivity login result:" + userInfo.toString());
 //        startService();
+        umt = ViewModelProviders.of(this).get(UserModelTest.class);
+        umt.testLD.observe(this, new Observer<String>() {
+            @Override
+            public void onChanged(@Nullable String s) {
+                XLog.e("MainActivity livedata changed="+s);
+            }
+        });
+        mHandler.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                XLog.e("Main setvaule 123");
+                umt.testLD.setValue("a=====123");
+            }
+        },6000);
     }
 
     @Override
@@ -83,6 +105,11 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
         startService(intent);
     }
 
+    @Override
+    protected void onResume() {
+        super.onResume();
+        XLog.e("MainActivity onResume livedata "+umt.testLD.getValue());
+    }
 
     @Override
     public void onClick(View v) {

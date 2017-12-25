@@ -1,6 +1,6 @@
 package com.android.jtknife.modules.feature;
 
-import android.content.Context;
+import android.app.Activity;
 import android.view.View;
 
 import com.android.jtknife.core.app.BaseDelegate;
@@ -13,8 +13,13 @@ import com.android.jtknife.core.app.BaseDelegate;
  */
 public class TestDelegate extends BaseDelegate {
 
-    public TestDelegate(Context context, View rootView) {
+    public TestDelegate(Activity context, View rootView) {
         super(context, rootView);
+    }
+
+    @Override
+    protected void onInitView() {
+
     }
 
 
