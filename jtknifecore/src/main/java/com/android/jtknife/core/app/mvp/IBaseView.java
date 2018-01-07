@@ -5,6 +5,6 @@ package com.android.jtknife.core.app.mvp;
  * AUTHOR: yangjiantong
  * DATE: 2016/11/14
  */
-public interface BaseView {
+public interface IBaseView {
 
 }

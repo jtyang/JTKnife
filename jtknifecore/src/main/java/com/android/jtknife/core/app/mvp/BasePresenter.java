@@ -1,29 +1,33 @@
 package com.android.jtknife.core.app.mvp;
 
-import android.support.annotation.Nullable;
+import android.support.annotation.NonNull;
+
+import java.lang.ref.WeakReference;
 
 /**
  * 文件描述
  * AUTHOR: yangjiantong
  * DATE: 2016/11/14
  */
-public abstract class BasePresenter<V extends BaseView> {
+public abstract class BasePresenter<V extends IBaseView> {
 
-    @Nullable
-    private V view;
+    private WeakReference<V> viewRef;
 
-    public void attachView(V view) {
-        this.view = view;
+    public void attachView(@NonNull V view) {
+        this.viewRef = new WeakReference<V>(view);
     }
 
     public void detachView() {
-        this.view = null;
+        if (this.viewRef != null) {
+            this.viewRef.clear();
+        }
     }
 
-
-    @Nullable
     public V getView() {
-        return view;
+        if (this.viewRef != null) {
+            return this.viewRef.get();
+        }
+        return null;
     }
 
 //    public abstract Bundle getStatus();
