@@ -12,7 +12,7 @@ import com.android.jtknife.core.app.BaseAppCompatActivity;
  * @author yangjiantong
  * @date 2018/1/7
  */
-public abstract class BaseMvpActivity<V extends IBaseView, T extends BasePresenter<V>> extends BaseAppCompatActivity {
+public abstract class BaseMvpActivity<V, T extends BasePresenter<V>> extends BaseAppCompatActivity {
 
     protected T mPresenter;
 
